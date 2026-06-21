@@ -1,0 +1,924 @@
+# Plik konfiguracyjny Yaku — asset bundlowany z aplikacją (feature: yaku_list)
+# Format: lista płaska. Grupowanie po Han/Yakuman odbywa się w kodzie (presentation
+# lub domain), nie w danych — analogicznie do podejścia z `tiles` w Event Sourcing,
+# gdzie struktura danych jest minimalna a logika (np. wnioskowanie typu seta z
+# długości grupy) żyje w silniku.
+#
+# Render Markdown: flutter_markdown_plus (aktywny fork po discontinued flutter_markdown,
+# API ~identyczne ze starym pakietem — sprawdzić aktualną wersję na pub.dev przed startem).
+#
+# Pola:
+#   id                      - unikalny identyfikator (snake_case, stabilny, do referencji/debug)
+#   original_japanese_name  - nazwa w kanji/kana
+#   romanized_japanese_name - nazwa w romaji (główna nazwa w widoku listy/szczegółowym)
+#   english_name            - nazwa angielska (pomocnicza, mniejsza czcionka w UI)
+#   description             - opis układu, Markdown-lite (np. **...**) do prezentacji w UI
+#   han                     - liczba Han (int) | null jeśli is_yakuman == true
+#   is_yakuman              - bool, true dla Yakuman/Double Yakuman
+#   yakuman_multiplier      - int (1, 2...) | null jeśli is_yakuman == false
+#   conditions              - lista warunków/zastrzeżeń (Markdown-lite); [] jeśli brak
+#
+#   index_tiles              - JEDEN skrócony zestaw setów, pokazujący to, co DEFINIUJE dany
+#                               Yaku — nie przykładowy podzbiór pełnej ręki. Zasada: jeśli
+#                               konkretna wartość/typ kafelka jest częścią reguły (np. Iipeikou
+#                               wymaga identycznych sekwencji, Ryuuiisou wymaga konkretnych
+#                               kafelków), pokazujemy ją. Jeśli definicją jest czysto STRUKTURA
+#                               lub LICZBA elementów, a wartości są dowolne (np. Toitoi: cztery
+#                               JAKIEKOLWIEK trójki; Suukantsu: cztery JAKIEKOLWIEK kany),
+#                               zostawiamy [] — nie ma "kluczowego kafelka" do pokazania, a
+#                               sugerowanie jednej wartości byłoby błędem (czytelnik mógłby
+#                               pomyśleć, że ta konkretna wartość jest wymagana).
+#                               Dla Yaku wymagających WSZYSTKICH elementów zbioru (Kokushi Musou:
+#                               wszystkie 13 typów; Shousuushi/Daisuushi: wszystkie 4 wiatry),
+#                               index_tiles zawiera kompletny zestaw, nie podzbiór.
+#                               Dla Yaku opisujących zakres/ciągłość (Chuuren Poutou: 1 do 9),
+#                               index_tiles może zawierać nakładające się grupy żeby pokazać
+#                               cały zakres bez wymuszania pokazania całych 13-14 kafelków.
+#                               [] również gdy Yaku nie jest opisywalny kafelkami w ogóle
+#                               (np. Riichi, Nagashi Mangan) — UI wtedy pokazuje opis tekstowy.
+#
+#   variants                 - lista PEŁNYCH wariantów do widoku szczegółowego (show).
+#                               [] jeśli nieopisywalny kafelkami.
+#
+#   Format setu (wspólny dla index_tiles i variants):
+#     - lista kafelków w grupie; długość grupy => silnik wnioskuje typ
+#       (2 = para, 3 = trójka/sekwencja, 4 = kan)
+#     - "back" jako pojedyncza wartość = dowolny kompletny, nieistotny set
+#     - interpreter dopełnia variants do standardowych 4 sety + 1 para, jeśli suma się
+#       nie zgadza; index_tiles NIE jest dopełniane (świadomie niekompletny układ)
+#
+#   Uwaga ogólna o przykładach "kontekstowych" (Bakaze, Jikaze, Sangenpai): te Yaku nie
+#   mają jednego "poprawnego" kafelka — Bakaze/Jikaze zależą od wiatru okrążenia/gracza,
+#   Sangenpai może dotyczyć każdego z trzech smoków. W tych wpisach index_tiles/variants
+#   pokazują JEDEN reprezentatywny przykład, z jasną notką w `conditions`, że jest to
+#   ilustracja zasady, a nie jedyny poprawny wariant.
+
+yaku:
+  # --- Yaku oparte na deklaracji / timingu (bez stałego układu kafelków) ---
+
+  - id: riichi
+    original_japanese_name: "立直"
+    romanized_japanese_name: "Riichi"
+    english_name: "Ready Hand Declaration"
+    description: "Declaring a **closed, tenpai hand** by placing a 1000-point stick sideways, while betting that 1000 points on the outcome."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Closed hand only."
+      - "Requires at least 1000 points to declare."
+      - "Hand becomes locked — tiles can no longer be rearranged (with minor exceptions for drawn tiles)."
+    index_tiles: []
+    variants: []
+
+  - id: ippatsu
+    original_japanese_name: "一発"
+    romanized_japanese_name: "Ippatsu"
+    english_name: "One-Shot Win"
+    description: "Winning within **one go-around** of declaring Riichi, with no calls (Pon/Chii/Kan) interrupting that go-around."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Stacks with Riichi — counted as a separate, additional Han."
+      - "Voided if any player calls a tile before the winning tile is drawn or discarded."
+    index_tiles: []
+    variants: []
+
+  - id: double_riichi
+    original_japanese_name: "両立直"
+    romanized_japanese_name: "Daburii"
+    english_name: "Double Riichi"
+    description: "Declaring Riichi on the **very first discard** of the hand, before any calls have been made by anyone."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Replaces ordinary Riichi (1 Han) — counted as 2 Han instead, not 1+2."
+      - "Voided if any call (Pon/Chii/Kan) happens before the declaration."
+    index_tiles: []
+    variants: []
+
+  - id: menzen_tsumo
+    original_japanese_name: "門前清自摸和"
+    romanized_japanese_name: "Menzen Tsumo"
+    english_name: "Self-Draw"
+    description: "Winning by **self-draw** (Tsumo) with a fully closed hand."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Closed hand only."
+    index_tiles: []
+    variants: []
+
+  - id: nagashi_mangan
+    original_japanese_name: "流し満貫"
+    romanized_japanese_name: "Nagashi Mangan"
+    english_name: "Mangan at Draw"
+    description: "All discards are terminals/honors and none were claimed by other players, through an exhaustive draw. Scored as a variant of **Tsumo**, not as a Ryuukyoku outcome."
+    han: 5
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Treated as Mangan regardless of actual Han/Fu."
+      - "Counted as a Tsumo win in the round event, not a draw."
+    index_tiles: []
+    variants: []
+
+  - id: tenhou
+    original_japanese_name: "天和"
+    romanized_japanese_name: "Tenhou"
+    english_name: "Blessing of Heaven"
+    description: "The **dealer** wins on their very first draw, before any discard or call has happened."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Dealer only."
+      - "No discards or calls may have occurred before this win."
+    index_tiles: []
+    variants: []
+
+  - id: chiihou
+    original_japanese_name: "地和"
+    romanized_japanese_name: "Chiihou"
+    english_name: "Blessing of Earth"
+    description: "A **non-dealer** wins on their first draw, with no calls having interrupted the hand before that draw."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Non-dealer only."
+      - "No calls may have occurred before this win."
+    index_tiles: []
+    variants: []
+
+  # --- Yaku zależne od momentu/sytuacji w grze (timing), z przykładowym kafelkiem ---
+
+  - id: haitei_raoyue
+    original_japanese_name: "海底摸月"
+    romanized_japanese_name: "Haitei Raoyue"
+    english_name: "Under the sea"
+    description: "Winning by **self-draw** on the very last tile of the wall."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Must be a self-draw (Tsumo), not a Ron."
+    index_tiles: []
+    variants: []
+
+  - id: houtei_raoyui
+    original_japanese_name: "河底撈魚"
+    romanized_japanese_name: "Houtei Raoyui"
+    english_name: "Under the river"
+    description: "Winning by **Ron** on the very last discard of the round, after the wall is exhausted."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Must be a Ron, not a self-draw."
+    index_tiles: []
+    variants: []
+
+  - id: rinshan_kaihou
+    original_japanese_name: "嶺上開花"
+    romanized_japanese_name: "Rinshan Kaihou"
+    english_name: "After a Kan"
+    description: "Winning by self-draw on the **replacement tile** drawn immediately after declaring a Kan."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions: []
+    index_tiles: []
+    variants: []
+
+  - id: chankan
+    original_japanese_name: "槍槓"
+    romanized_japanese_name: "Chankan"
+    english_name: "Robbing the Kan"
+    description: "Winning by **Ron** off a tile another player adds to an existing triplet to upgrade it into a Kan (Shouminkan)."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Only applies to the added-tile Kan (Shouminkan), not a closed Kan."
+    index_tiles: []
+    variants: []
+
+  - id: bakaze
+    original_japanese_name: "場風"
+    romanized_japanese_name: "Bakaze"
+    english_name: "Round Wind"
+    description: "A triplet (or Kan) of the **round's prevailing wind** (e.g. East during an East round)."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Example tile shown is illustrative only — the relevant wind changes with the round wind (East/South/West/North), not always East."
+    index_tiles:
+      - ["east", "east", "east"]
+    variants:
+      - - "back"
+        - "back"
+        - "back"
+        - ["east", "east", "east"]
+        - "back"
+
+  - id: jikaze
+    original_japanese_name: "自風"
+    romanized_japanese_name: "Jikaze"
+    english_name: "Seat Wind"
+    description: "A triplet (or Kan) of the **player's own seat wind** for that round."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Example tile shown is illustrative only — the relevant wind depends on the player's own seat (East/South/West/North), not always East."
+      - "Can stack with Bakaze when the player's seat wind matches the round wind (e.g. dealer in an East round)."
+    index_tiles:
+      - ["east", "east", "east"]
+    variants:
+      - - "back"
+        - "back"
+        - "back"
+        - ["east", "east", "east"]
+        - "back"
+
+  - id: sangenpai
+    original_japanese_name: "三元牌"
+    romanized_japanese_name: "Sangenpai"
+    english_name: "Dragon Triplet"
+    description: "A triplet (or Kan) of **any one dragon tile** (Haku, Hatsu, or Chun)."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Example tile shown is illustrative only — this Yaku applies once per dragon triplet, for any of the three dragons."
+      - "Counted once per dragon triplet held; having two or three counts multiple times (see Shousangen/Daisangen for the named combinations)."
+    index_tiles:
+      - ["haku", "haku", "haku"]
+    variants:
+      - - "back"
+        - "back"
+        - "back"
+        - ["haku", "haku", "haku"]
+        - "back"
+
+  # --- Yaku ze stałym układem kafelków ---
+
+  - id: pinfu
+    original_japanese_name: "平和"
+    romanized_japanese_name: "Pinfu"
+    english_name: "All Sequences"
+    description: "Hand made entirely of **sequences**, a **non-yakuhai pair**, and an open wait."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Closed hand only."
+      - "Fu is fixed: 20 Fu on Tsumo, 30 Fu on Ron."
+    index_tiles:
+      - ["2m", "3m", "4m"]
+      - ["6s", "7s", "8s"]
+    variants:
+      - - ["2m", "3m", "4m"]
+        - ["4p", "5p", "6p"]
+        - ["6s", "7s", "8s"]
+        - ["1s", "2s", "3s"]
+        - ["5m", "5m"]
+
+  - id: iipeikou
+    original_japanese_name: "一盃口"
+    romanized_japanese_name: "Iipeikou"
+    english_name: "Pure Double Sequence"
+    description: "Two **identical sequences** in the same suit (e.g. two 2-3-4 of bamboo)."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Closed hand only."
+    index_tiles:
+      - ["2m", "3m", "4m"]
+      - ["2m", "3m", "4m"]
+    variants:
+      - - ["2m", "3m", "4m"]
+        - ["2m", "3m", "4m"]
+        - ["5p", "6p", "7p"]
+        - ["9s", "9s", "9s"]
+        - ["1p", "1p"]
+
+  - id: ryanpeikou
+    original_japanese_name: "二盃口"
+    romanized_japanese_name: "Ryanpeikou"
+    english_name: "Twice Pure Double Sequence"
+    description: "Two separate **Iipeikou** (identical sequence pairs) within the same hand."
+    han: 3
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Closed hand only."
+    index_tiles:
+      - ["2m", "3m", "4m"]
+      - ["2m", "3m", "4m"]
+      - ["6p", "7p", "8p"]
+      - ["6p", "7p", "8p"]
+    variants:
+      - - ["2m", "3m", "4m"]
+        - ["2m", "3m", "4m"]
+        - ["6p", "7p", "8p"]
+        - ["6p", "7p", "8p"]
+        - ["9s", "9s"]
+
+  - id: chiitoitsu
+    original_japanese_name: "七対子"
+    romanized_japanese_name: "Chiitoitsu"
+    english_name: "Seven Pairs"
+    description: "Seven **distinct pairs**, instead of the usual 4 sets + 1 pair shape."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Closed hand only."
+      - "Non-standard shape: seven pairs, not 4 sets + 1 pair."
+      - "Always worth 25 Fu."
+    index_tiles:
+      - ["1m", "1m"]
+      - ["5p", "5p"]
+      - ["9s", "9s"]
+      - ["east", "east"]
+      - ["haku", "haku"]
+      - ["hatsu", "hatsu"]
+      - ["chun", "chun"]
+    variants:
+      - - ["1m", "1m"]
+        - ["5p", "5p"]
+        - ["9s", "9s"]
+        - ["east", "east"]
+        - ["haku", "haku"]
+        - ["hatsu", "hatsu"]
+        - ["chun", "chun"]
+
+  - id: tanyao
+    original_japanese_name: "断么九"
+    romanized_japanese_name: "Tanyao"
+    english_name: "All Simples"
+    description: "Hand contains **no terminals (1/9)** and **no honor tiles** — only 2 through 8."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions: []
+    index_tiles:
+      - ["2m", "3m", "4m"]
+      - ["6s", "6s", "6s"]
+    variants:
+      - - ["2m", "3m", "4m"]
+        - ["4p", "5p", "6p"]
+        - ["6s", "6s", "6s"]
+        - ["3s", "4s", "5s"]
+        - ["7p", "7p"]
+
+  - id: sanshoku_doujun
+    original_japanese_name: "三色同順"
+    romanized_japanese_name: "Sanshoku Doujun"
+    english_name: "Three Color Straight"
+    description: "The **same sequence** in all three suits."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Open hand: 1 Han. Closed hand: 2 Han."
+    index_tiles:
+      - ["3m", "4m", "5m"]
+      - ["3p", "4p", "5p"]
+      - ["3s", "4s", "5s"]
+    variants:
+      - - ["3m", "4m", "5m"]
+        - ["3p", "4p", "5p"]
+        - ["3s", "4s", "5s"]
+        - ["7p", "8p", "9p"]
+        - ["2m", "2m"]
+
+  - id: sanshoku_doukou
+    original_japanese_name: "三色同刻"
+    romanized_japanese_name: "Sanshoku Doukou"
+    english_name: "Three Color Triplets"
+    description: "The **same triplet number** in all three suits (e.g. triplets of 5 in man, pin and sou)."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions: []
+    index_tiles:
+      - ["5m", "5m", "5m"]
+      - ["5p", "5p", "5p"]
+      - ["5s", "5s", "5s"]
+    variants:
+      - - ["5m", "5m", "5m"]
+        - ["5p", "5p", "5p"]
+        - ["5s", "5s", "5s"]
+        - ["1p", "2p", "3p"]
+        - ["9s", "9s"]
+
+  - id: ittsu
+    original_japanese_name: "一気通貫"
+    romanized_japanese_name: "Ittsu"
+    english_name: "Pure Straight"
+    description: "Sequences **1-2-3, 4-5-6 and 7-8-9** all in the same suit."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Open hand: 1 Han. Closed hand: 2 Han."
+    index_tiles:
+      - ["1m", "2m", "3m"]
+      - ["4m", "5m", "6m"]
+      - ["7m", "8m", "9m"]
+    variants:
+      - - ["1m", "2m", "3m"]
+        - ["4m", "5m", "6m"]
+        - ["7m", "8m", "9m"]
+        - ["2p", "3p", "4p"]
+        - ["9s", "9s"]
+
+  - id: chanta
+    original_japanese_name: "全帯"
+    romanized_japanese_name: "Chanta"
+    english_name: "Half Outside Hand"
+    description: "All groups contain **1**, **9** or an **honor** tile."
+    han: 1
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Open hand: 1 Han. Closed hand: 2 Han."
+    index_tiles:
+      - ["1s", "2s", "3s"]
+      - ["9p", "9p", "9p"]
+    variants:
+      - - ["1s", "2s", "3s"]
+        - ["1m", "2m", "3m"]
+        - ["7s", "8s", "9s"]
+        - ["9p", "9p", "9p"]
+        - ["chun", "chun"]
+      - - ["7m", "8m", "9m"]
+        - ["1p", "1p", "1p"]
+        - ["9s", "9s", "9s"]
+        - ["east", "east", "east"]
+        - ["haku", "haku"]
+
+  - id: junchan
+    original_japanese_name: "純全帯么九"
+    romanized_japanese_name: "Junchan"
+    english_name: "Perfect Outside Hand"
+    description: "All groups contain **1** or **9** only — no honor tiles, unlike Chanta."
+    han: 3
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Open hand: 2 Han. Closed hand: 3 Han."
+    index_tiles:
+      - ["1m", "2m", "3m"]
+      - ["9s", "9s", "9s"]
+    variants:
+      - - ["1m", "2m", "3m"]
+        - ["7m", "8m", "9m"]
+        - ["1p", "2p", "3p"]
+        - ["9s", "9s", "9s"]
+        - ["1s", "1s"]
+
+  - id: honroutou
+    original_japanese_name: "混老頭"
+    romanized_japanese_name: "Honroutou"
+    english_name: "All Terminals and Honors"
+    description: "Every tile is a **terminal (1/9)** or an **honor** — no tiles 2 through 8 at all."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Always made of triplets/Kans plus a pair — never contains a sequence."
+    index_tiles:
+      - ["9p", "9p", "9p"]
+      - ["east", "east", "east"]
+    variants:
+      - - ["9p", "9p", "9p"]
+        - ["1s", "1s", "1s"]
+        - ["east", "east", "east"]
+        - ["haku", "haku", "haku"]
+        - ["1m", "1m"]
+
+  - id: chinroutou
+    original_japanese_name: "清老頭"
+    romanized_japanese_name: "Chinroutou"
+    english_name: "All Terminals"
+    description: "Every tile is a **terminal (1 or 9)** — no honors, no 2 through 8."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Always made of triplets/Kans plus a pair — never contains a sequence."
+    index_tiles:
+      - ["9p", "9p", "9p"]
+      - ["1s", "1s", "1s"]
+    variants:
+      - - ["9p", "9p", "9p"]
+        - ["1s", "1s", "1s"]
+        - ["1m", "1m", "1m"]
+        - ["9m", "9m", "9m"]
+        - ["1p", "1p"]
+
+  - id: tsuuiisou
+    original_japanese_name: "字一色"
+    romanized_japanese_name: "Tsuuiisou"
+    english_name: "All Honors"
+    description: "Every tile is an **honor tile** — winds and dragons only, no number tiles at all."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Always made of triplets/Kans plus a pair — never contains a sequence."
+    index_tiles:
+      - ["east", "east", "east"]
+      - ["haku", "haku", "haku"]
+    variants:
+      - - ["east", "east", "east"]
+        - ["south", "south", "south"]
+        - ["haku", "haku", "haku"]
+        - ["hatsu", "hatsu", "hatsu"]
+        - ["chun", "chun"]
+
+  - id: ryuuiisou
+    original_japanese_name: "緑一色"
+    romanized_japanese_name: "Ryuuiisou"
+    english_name: "All Green"
+    description: "Every tile is **green**: only 2, 3, 4, 6 and 8 of bamboo, plus the Hatsu (green dragon)."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Only the tiles 2s, 3s, 4s, 6s, 8s and Hatsu may appear in the hand — no other tile qualifies."
+    index_tiles:
+      - ["2s", "3s", "4s"]
+      - ["hatsu", "hatsu", "hatsu"]
+    variants:
+      - - ["2s", "3s", "4s"]
+        - ["6s", "6s", "6s"]
+        - ["8s", "8s", "8s"]
+        - ["hatsu", "hatsu", "hatsu"]
+        - ["4s", "4s"]
+
+  - id: toitoi
+    original_japanese_name: "対々和"
+    romanized_japanese_name: "Toitoi"
+    english_name: "All Triplets"
+    description: "Hand made entirely of **triplets (or Kans)** plus a pair — no sequences."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "No specific tile values are required — any combination of triplets qualifies."
+    index_tiles: []
+    variants:
+      - - ["2m", "2m", "2m"]
+        - ["7p", "7p", "7p"]
+        - ["5s", "5s", "5s"]
+        - ["east", "east", "east"]
+        - ["9p", "9p"]
+
+  - id: suuankou
+    original_japanese_name: "四暗刻"
+    romanized_japanese_name: "Suuankou"
+    english_name: "Four Concealed Triplets"
+    description: "Four **concealed triplets** plus a pair. Winning on the pair wait (tanki) upgrades this to Double Yakuman — see Suuankou Tanki."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Closed hand only."
+      - "All four triplets must be concealed (not won by Ron on the triplet itself)."
+      - "No specific tile values are required — any four concealed triplets qualify."
+    index_tiles: []
+    variants:
+      - - ["2m", "2m", "2m"]
+        - ["5p", "5p", "5p"]
+        - ["7s", "7s", "7s"]
+        - ["chun", "chun", "chun"]
+        - ["9p", "9p"]
+
+  - id: suuankou_tanki
+    original_japanese_name: "四暗刻単騎"
+    romanized_japanese_name: "Suuankou Tanki"
+    english_name: "Four Concealed Triplets, Pair Wait"
+    description: "Suuankou won specifically on a **tanki (pair) wait**."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 2
+    conditions:
+      - "Closed hand only."
+      - "Must win by completing the pair, not the final triplet."
+      - "No specific tile values are required — any four concealed triplets qualify."
+    index_tiles: []
+    variants:
+      - - ["2m", "2m", "2m"]
+        - ["5p", "5p", "5p"]
+        - ["7s", "7s", "7s"]
+        - ["chun", "chun", "chun"]
+        - ["9p", "9p"]
+
+  - id: sankantsu
+    original_japanese_name: "三槓子"
+    romanized_japanese_name: "Sankantsu"
+    english_name: "Three Kans"
+    description: "Hand contains **three Kans (quads)**, regardless of suit or value."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Hand size is 16 tiles due to the three Kans."
+      - "No specific tile values are required — any three Kans qualify."
+    index_tiles: []
+    variants:
+      - - ["1m", "1m", "1m", "1m"]
+        - ["5p", "5p", "5p", "5p"]
+        - ["east", "east", "east", "east"]
+        - ["3s", "4s", "5s"]
+        - ["9p", "9p"]
+
+  - id: suukantsu
+    original_japanese_name: "四槓子"
+    romanized_japanese_name: "Suukantsu"
+    english_name: "Four Kans"
+    description: "Four **kans (quads)** plus a pair. The rarest standard yakuman shape."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Hand size is 18 tiles due to the four kans."
+      - "No specific tile values are required — any four Kans qualify."
+    index_tiles: []
+    variants:
+      - - ["1m", "1m", "1m", "1m"]
+        - ["5p", "5p", "5p", "5p"]
+        - ["east", "east", "east", "east"]
+        - ["haku", "haku", "haku", "haku"]
+        - ["9s", "9s"]
+
+  - id: honnitsu
+    original_japanese_name: "混一色"
+    romanized_japanese_name: "Honnitsu"
+    english_name: "Half Flush"
+    description: "Hand uses only **one suit plus honor tiles** — no mixing of man/pin/sou."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Open hand: 2 Han. Closed hand: 3 Han."
+    index_tiles:
+      - ["2s", "3s", "4s"]
+      - ["east", "east", "east"]
+    variants:
+      - - ["2s", "3s", "4s"]
+        - ["6s", "7s", "8s"]
+        - ["9s", "9s", "9s"]
+        - ["east", "east", "east"]
+        - ["haku", "haku"]
+
+  - id: chinitsu
+    original_japanese_name: "清一色"
+    romanized_japanese_name: "Chinitsu"
+    english_name: "Full Flush"
+    description: "Hand uses only **one suit**, with no honor tiles and no mixing of suits."
+    han: 5
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions:
+      - "Open hand: 5 Han. Closed hand: 6 Han."
+    index_tiles:
+      - ["2s", "3s", "4s"]
+      - ["6s", "7s", "8s"]
+    variants:
+      - - ["2s", "3s", "4s"]
+        - ["6s", "7s", "8s"]
+        - ["1s", "1s", "1s"]
+        - ["4s", "5s", "6s"]
+        - ["9s", "9s"]
+
+  - id: shousangen
+    original_japanese_name: "小三元"
+    romanized_japanese_name: "Shousangen"
+    english_name: "Small Three Dragons"
+    description: "Two **dragon triplets** plus a **pair** of the third dragon."
+    han: 2
+    is_yakuman: false
+    yakuman_multiplier: null
+    conditions: []
+    index_tiles:
+      - ["haku", "haku", "haku"]
+      - ["hatsu", "hatsu", "hatsu"]
+      - ["chun", "chun"]
+    variants:
+      - - "back"
+        - "back"
+        - ["haku", "haku", "haku"]
+        - ["hatsu", "hatsu", "hatsu"]
+        - ["chun", "chun"]
+
+  - id: daisangen
+    original_japanese_name: "大三元"
+    romanized_japanese_name: "Daisangen"
+    english_name: "Big Three Dragons"
+    description: "Triplets of **all three dragons**."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions: []
+    index_tiles:
+      - ["haku", "haku", "haku"]
+      - ["hatsu", "hatsu", "hatsu"]
+      - ["chun", "chun", "chun"]
+    variants:
+      - - "back"
+        - "back"
+        - ["haku", "haku", "haku"]
+        - ["hatsu", "hatsu", "hatsu"]
+        - ["chun", "chun", "chun"]
+
+  - id: shousuushi
+    original_japanese_name: "小四喜"
+    romanized_japanese_name: "Shousuushi"
+    english_name: "Small Four Winds"
+    description: "Three **wind triplets** plus a **pair** of the fourth wind — all four winds represented."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions: []
+    index_tiles:
+      - ["east", "east", "east"]
+      - ["south", "south", "south"]
+      - ["west", "west", "west"]
+      - ["north", "north"]
+    variants:
+      - - ["east", "east", "east"]
+        - ["south", "south", "south"]
+        - ["west", "west", "west"]
+        - ["chun", "chun", "chun"]
+        - ["north", "north"]
+
+  - id: daisuushi
+    original_japanese_name: "大四喜"
+    romanized_japanese_name: "Daisuushi"
+    english_name: "Big Four Winds"
+    description: "Triplets of **all four winds**."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 2
+    conditions:
+      - "Considered Double Yakuman under most common rule sets."
+    index_tiles:
+      - ["east", "east", "east"]
+      - ["south", "south", "south"]
+      - ["west", "west", "west"]
+      - ["north", "north", "north"]
+    variants:
+      - - ["east", "east", "east"]
+        - ["south", "south", "south"]
+        - ["west", "west", "west"]
+        - ["north", "north", "north"]
+        - ["chun", "chun"]
+
+  - id: chuuren_poutou
+    original_japanese_name: "九蓮宝燈"
+    romanized_japanese_name: "Chuuren Poutou"
+    english_name: "Nine Gates"
+    description: "One suit only, in the pattern **1-1-1-2-3-4-5-6-7-8-9-9-9** plus one more tile of that suit (2 through 8)."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Closed hand only."
+      - "Winning tile is any 2–8 of the suit used; the resulting wait is single (not a multi-sided wait — see Junsei Chuuren Poutou)."
+    index_tiles:
+      - ["1p", "1p", "1p"]
+      - ["2p", "3p", "4p"]
+      - ["5p", "6p", "7p"]
+      - ["7p", "8p", "9p"]
+      - ["9p", "9p"]
+    variants:
+      - - ["1p", "1p", "1p"]
+        - ["2p", "3p", "4p"]
+        - ["5p", "6p", "7p"]
+        - ["9p", "9p", "9p"]
+        - ["8p", "8p"]
+
+  - id: junsei_chuuren_poutou
+    original_japanese_name: "純正九蓮宝燈"
+    romanized_japanese_name: "Junsei Chuuren Poutou"
+    english_name: "True Nine Gates"
+    description: "Chuuren Poutou won on the **pure 1-9-9-1 shape** (1112345678999) before drawing the extra tile, so that the winning tile completes a wait on **all nine** tiles 1 through 9 of that suit."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 2
+    conditions:
+      - "Closed hand only."
+      - "Tile pattern before the winning tile is exactly 1-1-1-2-3-4-5-6-7-8-9-9-9 of one suit — a nine-sided wait."
+    index_tiles:
+      - ["1p", "1p", "1p"]
+      - ["2p", "3p", "4p"]
+      - ["5p", "6p", "7p"]
+      - ["7p", "8p", "9p"]
+      - ["9p", "9p"]
+    variants:
+      - - ["1p", "1p", "1p"]
+        - ["2p", "3p", "4p"]
+        - ["5p", "6p", "7p"]
+        - ["8p", "9p", "9p"]
+        - ["9p", "1p"]
+
+  - id: kokushi_musou
+    original_japanese_name: "国士無双"
+    romanized_japanese_name: "Kokushi Musou"
+    english_name: "Thirteen Orphans"
+    description: "One of each **terminal** and **honor** tile, plus a duplicate of one of them."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 1
+    conditions:
+      - "Closed hand only."
+      - "Non-standard shape: not 4 sets + 1 pair."
+      - "Requires all thirteen terminal/honor types — no partial set qualifies."
+    index_tiles:
+      - [
+          "1m",
+          "9m",
+          "1p",
+          "9p",
+          "1s",
+          "9s",
+          "east",
+          "south",
+          "west",
+          "north",
+          "haku",
+          "hatsu",
+          "chun",
+        ]
+    variants:
+      - - [
+            "1m",
+            "9m",
+            "1p",
+            "9p",
+            "1s",
+            "9s",
+            "east",
+            "south",
+            "west",
+            "north",
+            "haku",
+            "hatsu",
+            "chun",
+            "chun",
+          ]
+
+  - id: kokushi_musou_13_wait
+    original_japanese_name: "国士無双十三面待ち"
+    romanized_japanese_name: "Kokushi Musou Juusanmenmachi"
+    english_name: "Thirteen Orphans, Thirteen-Sided Wait"
+    description: "Kokushi Musou won while waiting on **all thirteen** terminal/honor tile types simultaneously."
+    han: null
+    is_yakuman: true
+    yakuman_multiplier: 2
+    conditions:
+      - "Closed hand only."
+      - "Requires holding one each of all thirteen terminal/honor types before the win, with the winning tile forming the pair."
+    index_tiles:
+      - [
+          "1m",
+          "9m",
+          "1p",
+          "9p",
+          "1s",
+          "9s",
+          "east",
+          "south",
+          "west",
+          "north",
+          "haku",
+          "hatsu",
+          "chun",
+        ]
+    variants:
+      - - [
+            "1m",
+            "9m",
+            "1p",
+            "9p",
+            "1s",
+            "9s",
+            "east",
+            "south",
+            "west",
+            "north",
+            "haku",
+            "hatsu",
+            "chun",
+          ]
