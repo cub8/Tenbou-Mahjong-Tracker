@@ -1,6 +1,6 @@
 import 'package:tenbou_mahjong/features/yaku/data/models/mahjong_tile.dart';
 
-enum MahjongSetType { pair, group, kan, back }
+enum MahjongSetType { pair, group, kan }
 
 class MahjongTileSet {
   final List<MahjongTile> tiles;
@@ -9,10 +9,6 @@ class MahjongTileSet {
   const MahjongTileSet._(this.tiles, this.setType);
 
   factory MahjongTileSet.fromYaml(dynamic raw) {
-    if (raw is String && raw == "back") {
-      return const MahjongTileSet._([], MahjongSetType.back);
-    }
-
     final tiles = (raw as List).map(_tileFromString).toList();
     final type = switch (tiles.length) {
       2 => MahjongSetType.pair,

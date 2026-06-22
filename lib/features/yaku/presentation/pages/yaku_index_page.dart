@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import 'package:tenbou_mahjong/features/yaku/domain/models/han_category.dart';
 import 'package:tenbou_mahjong/features/yaku/domain/usecases/yaku_by_value_use_case.dart';
+import 'package:tenbou_mahjong/features/yaku/presentation/widgets/yaku_list_item_widget.dart';
 
 class YakuIndexPage extends ConsumerWidget {
   const YakuIndexPage({super.key});
@@ -26,8 +27,13 @@ class YakuIndexPage extends ConsumerWidget {
         body: groupedYakuAsync.when(
           data: (groupedYaku) => TabBarView(
             children: HanCategory.values.map((category) {
-              final count = groupedYaku[category]?.length ?? 0;
-              return Center(child: Text("${category.label} - $count Yaku"));
+              final records = groupedYaku[category] ?? [];
+
+              return ListView.builder(
+                itemCount: records.length,
+                itemBuilder: (context, index) =>
+                    YakuListItemWidget(record: records[index]),
+              );
             }).toList(),
           ),
           loading: () => const Center(child: CircularProgressIndicator()),

@@ -86,4 +86,6 @@ const _map = {
   "haku": MahjongTile.haku,
   "hatsu": MahjongTile.hatsu,
   "chun": MahjongTile.chun,
+  // Wildcard
+  "back": MahjongTile.back,
 };

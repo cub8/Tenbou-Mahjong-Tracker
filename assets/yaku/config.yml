@@ -43,7 +43,6 @@
 #   Format setu (wspólny dla index_tiles i variants):
 #     - lista kafelków w grupie; długość grupy => silnik wnioskuje typ
 #       (2 = para, 3 = trójka/sekwencja, 4 = kan)
-#     - "back" jako pojedyncza wartość = dowolny kompletny, nieistotny set
 #     - interpreter dopełnia variants do standardowych 4 sety + 1 para, jeśli suma się
 #       nie zgadza; index_tiles NIE jest dopełniane (świadomie niekompletny układ)
 #
@@ -87,7 +86,7 @@ yaku:
 
   - id: double_riichi
     original_japanese_name: "両立直"
-    romanized_japanese_name: "Daburii"
+    romanized_japanese_name: "Daburii Riichi"
     english_name: "Double Riichi"
     description: "Declaring Riichi on the **very first discard** of the hand, before any calls have been made by anyone."
     han: 2
@@ -220,11 +219,11 @@ yaku:
     index_tiles:
       - ["east", "east", "east"]
     variants:
-      - - "back"
-        - "back"
-        - "back"
+      - - ["back", "back", "back"]
+        - ["back", "back", "back"]
+        - ["back", "back", "back"]
         - ["east", "east", "east"]
-        - "back"
+        - ["back", "back"]
 
   - id: jikaze
     original_japanese_name: "自風"
@@ -238,13 +237,13 @@ yaku:
       - "Example tile shown is illustrative only — the relevant wind depends on the player's own seat (East/South/West/North), not always East."
       - "Can stack with Bakaze when the player's seat wind matches the round wind (e.g. dealer in an East round)."
     index_tiles:
-      - ["east", "east", "east"]
+      - ["west", "west", "west"]
     variants:
-      - - "back"
-        - "back"
-        - "back"
-        - ["east", "east", "east"]
-        - "back"
+      - - ["back", "back", "back"]
+        - ["back", "back", "back"]
+        - ["back", "back", "back"]
+        - ["west", "west", "west"]
+        - ["back", "back"]
 
   - id: sangenpai
     original_japanese_name: "三元牌"
@@ -260,11 +259,11 @@ yaku:
     index_tiles:
       - ["haku", "haku", "haku"]
     variants:
-      - - "back"
-        - "back"
-        - "back"
+      - - ["back", "back", "back"]
+        - ["back", "back", "back"]
+        - ["back", "back", "back"]
         - ["haku", "haku", "haku"]
-        - "back"
+        - ["back", "back"]
 
   # --- Yaku ze stałym układem kafelków ---
 
@@ -471,7 +470,7 @@ yaku:
     romanized_japanese_name: "Junchan"
     english_name: "Perfect Outside Hand"
     description: "All groups contain **1** or **9** only — no honor tiles, unlike Chanta."
-    han: 3
+    han: 2
     is_yakuman: false
     yakuman_multiplier: null
     conditions:
@@ -558,6 +557,7 @@ yaku:
       - "Only the tiles 2s, 3s, 4s, 6s, 8s and Hatsu may appear in the hand — no other tile qualifies."
     index_tiles:
       - ["2s", "3s", "4s"]
+      - ["6s", "8s"]
       - ["hatsu", "hatsu", "hatsu"]
     variants:
       - - ["2s", "3s", "4s"]
@@ -672,9 +672,7 @@ yaku:
     yakuman_multiplier: null
     conditions:
       - "Open hand: 2 Han. Closed hand: 3 Han."
-    index_tiles:
-      - ["2s", "3s", "4s"]
-      - ["east", "east", "east"]
+    index_tiles: []
     variants:
       - - ["2s", "3s", "4s"]
         - ["6s", "7s", "8s"]
@@ -692,9 +690,7 @@ yaku:
     yakuman_multiplier: null
     conditions:
       - "Open hand: 5 Han. Closed hand: 6 Han."
-    index_tiles:
-      - ["2s", "3s", "4s"]
-      - ["6s", "7s", "8s"]
+    index_tiles: []
     variants:
       - - ["2s", "3s", "4s"]
         - ["6s", "7s", "8s"]
@@ -716,8 +712,8 @@ yaku:
       - ["hatsu", "hatsu", "hatsu"]
       - ["chun", "chun"]
     variants:
-      - - "back"
-        - "back"
+      - - ["back", "back", "back"]
+        - ["back", "back", "back"]
         - ["haku", "haku", "haku"]
         - ["hatsu", "hatsu", "hatsu"]
         - ["chun", "chun"]
@@ -736,8 +732,8 @@ yaku:
       - ["hatsu", "hatsu", "hatsu"]
       - ["chun", "chun", "chun"]
     variants:
-      - - "back"
-        - "back"
+      - - ["back", "back", "back"]
+        - ["back", "back", "back"]
         - ["haku", "haku", "haku"]
         - ["hatsu", "hatsu", "hatsu"]
         - ["chun", "chun", "chun"]
