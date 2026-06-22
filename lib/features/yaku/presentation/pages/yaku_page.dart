@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tenbou_mahjong/features/yaku/data/models/yaku_record.dart';
 import 'package:tenbou_mahjong/features/yaku/domain/repositories/yaku_repository.dart';
 import 'package:tenbou_mahjong/features/yaku/presentation/widgets/mahjong_tiles_widget.dart';
+import 'package:tenbou_mahjong/features/yaku/presentation/widgets/value_icon_widget.dart';
 
 class YakuPage extends ConsumerWidget {
   final String id;
@@ -57,20 +58,36 @@ class _YakuContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            record.originalJapaneseName,
-            style: textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(record.romanizedJapaneseName, style: textTheme.titleLarge),
-          const SizedBox(height: 2),
-          Text(
-            record.englishName,
-            style: textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).hintColor,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      record.originalJapaneseName,
+                      style: textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      record.romanizedJapaneseName,
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      record.englishName,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).hintColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ValueIconWidget(scoring: record.scoring, size: 60),
+            ],
           ),
           const SizedBox(height: 20),
           MarkdownBody(data: record.description, shrinkWrap: true),

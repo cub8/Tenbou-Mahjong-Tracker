@@ -37,10 +37,10 @@ class ValueIconWidget extends StatelessWidget {
     return switch (scoring) {
       YakuScoringStandard(han: final han) => Text(
         "$han",
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 16,
+          fontSize: (size / 2.5),
         ),
       ),
       YakuScoringYakuman(multiplier: final multiplier) => _StarsRow(
