@@ -4,8 +4,8 @@ import 'package:tenbou_mahjong/features/yaku/domain/models/han_category.dart';
 import 'package:tenbou_mahjong/features/yaku/domain/usecases/yaku_by_value_use_case.dart';
 import 'package:tenbou_mahjong/features/yaku/presentation/widgets/yaku_list_item_widget.dart';
 
-class YakuIndexPage extends ConsumerWidget {
-  const YakuIndexPage({super.key});
+class YakuListPage extends ConsumerWidget {
+  const YakuListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

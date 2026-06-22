@@ -733,10 +733,10 @@ yaku:
       - ["chun", "chun", "chun"]
     variants:
       - - ["back", "back", "back"]
-        - ["back", "back", "back"]
         - ["haku", "haku", "haku"]
         - ["hatsu", "hatsu", "hatsu"]
         - ["chun", "chun", "chun"]
+        - ["back", "back"]
 
   - id: shousuushi
     original_japanese_name: "小四喜"
@@ -756,7 +756,7 @@ yaku:
       - - ["east", "east", "east"]
         - ["south", "south", "south"]
         - ["west", "west", "west"]
-        - ["chun", "chun", "chun"]
+        - ["back", "back", "back"]
         - ["north", "north"]
 
   - id: daisuushi
@@ -779,7 +779,7 @@ yaku:
         - ["south", "south", "south"]
         - ["west", "west", "west"]
         - ["north", "north", "north"]
-        - ["chun", "chun"]
+        - ["back", "back"]
 
   - id: chuuren_poutou
     original_japanese_name: "九蓮宝燈"
