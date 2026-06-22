@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:tenbou_mahjong/features/yaku/data/models/yaku_record.dart';
-import "package:go_router/go_router.dart";
 import 'package:tenbou_mahjong/features/yaku/presentation/widgets/mahjong_tiles_widget.dart';
 import 'package:tenbou_mahjong/features/yaku/presentation/widgets/value_icon_widget.dart';
+import 'package:tenbou_mahjong/router/app_router.dart';
 
 class YakuListItemWidget extends StatelessWidget {
   final YakuRecord record;
@@ -15,7 +15,7 @@ class YakuListItemWidget extends StatelessWidget {
     final hasTiles = record.indexTiles.isNotEmpty;
 
     return InkWell(
-      onTap: () => context.push('/yaku/${record.id}'),
+      onTap: () => YakuDetailRoute(id: record.id).push(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(

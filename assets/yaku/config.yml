@@ -537,7 +537,7 @@ yaku:
       - "Always made of triplets/Kans plus a pair — never contains a sequence."
     index_tiles:
       - ["east", "east", "east"]
-      - ["haku", "haku", "haku"]
+      - ["chun", "chun", "chun"]
     variants:
       - - ["east", "east", "east"]
         - ["south", "south", "south"]
