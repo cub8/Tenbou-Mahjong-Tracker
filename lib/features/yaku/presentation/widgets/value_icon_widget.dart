@@ -10,12 +10,14 @@ class ValueIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _HexagonPainter(color: _colorFor()),
-        child: Center(child: _contentFor()),
+    return SizedBox.square(
+      dimension: size,
+      child: ClipPath(
+        clipper: _HexagonClipper(),
+        child: ColoredBox(
+          color: _colorFor(),
+          child: Center(child: _contentFor()),
+        ),
       ),
     );
   }
@@ -40,7 +42,7 @@ class ValueIconWidget extends StatelessWidget {
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: (size / 2.5),
+          fontSize: _fontSize(),
         ),
       ),
       YakuScoringYakuman(multiplier: final multiplier) => _StarsRow(
@@ -48,6 +50,10 @@ class ValueIconWidget extends StatelessWidget {
         size: size,
       ),
     };
+  }
+
+  double _fontSize() {
+    return size / 2.5;
   }
 }
 
@@ -71,28 +77,11 @@ class _StarsRow extends StatelessWidget {
   }
 }
 
-class _HexagonPainter extends CustomPainter {
-  final Color color;
-
-  _HexagonPainter({required this.color});
-
+class _HexagonClipper extends CustomClipper<Path> {
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-
-    canvas.drawPath(_hexagonPath(size), paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _HexagonPainter oldDelegate) {
-    return oldDelegate.color != color;
-  }
-
-  Path _hexagonPath(Size size) {
+  Path getClip(Size size) {
     final centerX = size.width / 2;
-    final centerY = size.width / 2;
+    final centerY = size.height / 2;
     final radius = min(size.width, size.height) / 2;
     final path = Path();
 
@@ -110,4 +99,7 @@ class _HexagonPainter extends CustomPainter {
     path.close();
     return path;
   }
+
+  @override
+  bool shouldReclip(covariant _HexagonClipper oldClipper) => false;
 }
