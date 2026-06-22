@@ -1,10 +1,10 @@
 import 'package:tenbou_mahjong/features/yaku/data/models/mahjong_tile.dart';
 
-enum MahjongSetType { pair, group, kan, back, thirteenOrphans }
+enum MahjongSetType { pair, group, kan, back }
 
 class MahjongTileSet {
   final List<MahjongTile> tiles;
-  final MahjongSetType setType;
+  final MahjongSetType? setType;
 
   const MahjongTileSet._(this.tiles, this.setType);
 
@@ -18,8 +18,7 @@ class MahjongTileSet {
       2 => MahjongSetType.pair,
       3 => MahjongSetType.group,
       4 => MahjongSetType.kan,
-      13 || 14 => MahjongSetType.thirteenOrphans,
-      _ => throw FormatException("Invalid MahjongSetLength: ${tiles.length}"),
+      _ => null,
     };
 
     return MahjongTileSet._(tiles, type);

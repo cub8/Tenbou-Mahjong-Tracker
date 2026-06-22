@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$YakuRecord {
 
- String get id; String get originalJapaneseName; String get romanizedJapaneseName; String get englishName; String get description; YakuScoring get scoring; List<String> get conditions; List<MahjongTileSet> get indexTiles; List<List<MahjongTileSet>> get variants;
+ String get id; String get originalJapaneseName; String get romanizedJapaneseName; String get englishName; String get description; TileDisplayMode get tileDisplayMode; YakuScoring get scoring; List<String> get conditions; List<MahjongTileSet> get indexTiles; List<List<MahjongTileSet>> get variants;
 /// Create a copy of YakuRecord
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $YakuRecordCopyWith<YakuRecord> get copyWith => _$YakuRecordCopyWithImpl<YakuRec
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is YakuRecord&&(identical(other.id, id) || other.id == id)&&(identical(other.originalJapaneseName, originalJapaneseName) || other.originalJapaneseName == originalJapaneseName)&&(identical(other.romanizedJapaneseName, romanizedJapaneseName) || other.romanizedJapaneseName == romanizedJapaneseName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.description, description) || other.description == description)&&(identical(other.scoring, scoring) || other.scoring == scoring)&&const DeepCollectionEquality().equals(other.conditions, conditions)&&const DeepCollectionEquality().equals(other.indexTiles, indexTiles)&&const DeepCollectionEquality().equals(other.variants, variants));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is YakuRecord&&(identical(other.id, id) || other.id == id)&&(identical(other.originalJapaneseName, originalJapaneseName) || other.originalJapaneseName == originalJapaneseName)&&(identical(other.romanizedJapaneseName, romanizedJapaneseName) || other.romanizedJapaneseName == romanizedJapaneseName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.description, description) || other.description == description)&&(identical(other.tileDisplayMode, tileDisplayMode) || other.tileDisplayMode == tileDisplayMode)&&(identical(other.scoring, scoring) || other.scoring == scoring)&&const DeepCollectionEquality().equals(other.conditions, conditions)&&const DeepCollectionEquality().equals(other.indexTiles, indexTiles)&&const DeepCollectionEquality().equals(other.variants, variants));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,originalJapaneseName,romanizedJapaneseName,englishName,description,scoring,const DeepCollectionEquality().hash(conditions),const DeepCollectionEquality().hash(indexTiles),const DeepCollectionEquality().hash(variants));
+int get hashCode => Object.hash(runtimeType,id,originalJapaneseName,romanizedJapaneseName,englishName,description,tileDisplayMode,scoring,const DeepCollectionEquality().hash(conditions),const DeepCollectionEquality().hash(indexTiles),const DeepCollectionEquality().hash(variants));
 
 @override
 String toString() {
-  return 'YakuRecord(id: $id, originalJapaneseName: $originalJapaneseName, romanizedJapaneseName: $romanizedJapaneseName, englishName: $englishName, description: $description, scoring: $scoring, conditions: $conditions, indexTiles: $indexTiles, variants: $variants)';
+  return 'YakuRecord(id: $id, originalJapaneseName: $originalJapaneseName, romanizedJapaneseName: $romanizedJapaneseName, englishName: $englishName, description: $description, tileDisplayMode: $tileDisplayMode, scoring: $scoring, conditions: $conditions, indexTiles: $indexTiles, variants: $variants)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $YakuRecordCopyWith<$Res>  {
   factory $YakuRecordCopyWith(YakuRecord value, $Res Function(YakuRecord) _then) = _$YakuRecordCopyWithImpl;
 @useResult
 $Res call({
- String id, String originalJapaneseName, String romanizedJapaneseName, String englishName, String description, YakuScoring scoring, List<String> conditions, List<MahjongTileSet> indexTiles, List<List<MahjongTileSet>> variants
+ String id, String originalJapaneseName, String romanizedJapaneseName, String englishName, String description, TileDisplayMode tileDisplayMode, YakuScoring scoring, List<String> conditions, List<MahjongTileSet> indexTiles, List<List<MahjongTileSet>> variants
 });
 
 
@@ -62,14 +62,15 @@ class _$YakuRecordCopyWithImpl<$Res>
 
 /// Create a copy of YakuRecord
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? originalJapaneseName = null,Object? romanizedJapaneseName = null,Object? englishName = null,Object? description = null,Object? scoring = null,Object? conditions = null,Object? indexTiles = null,Object? variants = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? originalJapaneseName = null,Object? romanizedJapaneseName = null,Object? englishName = null,Object? description = null,Object? tileDisplayMode = null,Object? scoring = null,Object? conditions = null,Object? indexTiles = null,Object? variants = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,originalJapaneseName: null == originalJapaneseName ? _self.originalJapaneseName : originalJapaneseName // ignore: cast_nullable_to_non_nullable
 as String,romanizedJapaneseName: null == romanizedJapaneseName ? _self.romanizedJapaneseName : romanizedJapaneseName // ignore: cast_nullable_to_non_nullable
 as String,englishName: null == englishName ? _self.englishName : englishName // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,scoring: null == scoring ? _self.scoring : scoring // ignore: cast_nullable_to_non_nullable
+as String,tileDisplayMode: null == tileDisplayMode ? _self.tileDisplayMode : tileDisplayMode // ignore: cast_nullable_to_non_nullable
+as TileDisplayMode,scoring: null == scoring ? _self.scoring : scoring // ignore: cast_nullable_to_non_nullable
 as YakuScoring,conditions: null == conditions ? _self.conditions : conditions // ignore: cast_nullable_to_non_nullable
 as List<String>,indexTiles: null == indexTiles ? _self.indexTiles : indexTiles // ignore: cast_nullable_to_non_nullable
 as List<MahjongTileSet>,variants: null == variants ? _self.variants : variants // ignore: cast_nullable_to_non_nullable
@@ -167,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String originalJapaneseName,  String romanizedJapaneseName,  String englishName,  String description,  YakuScoring scoring,  List<String> conditions,  List<MahjongTileSet> indexTiles,  List<List<MahjongTileSet>> variants)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String originalJapaneseName,  String romanizedJapaneseName,  String englishName,  String description,  TileDisplayMode tileDisplayMode,  YakuScoring scoring,  List<String> conditions,  List<MahjongTileSet> indexTiles,  List<List<MahjongTileSet>> variants)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _YakuRecord() when $default != null:
-return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,_that.englishName,_that.description,_that.scoring,_that.conditions,_that.indexTiles,_that.variants);case _:
+return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,_that.englishName,_that.description,_that.tileDisplayMode,_that.scoring,_that.conditions,_that.indexTiles,_that.variants);case _:
   return orElse();
 
 }
@@ -188,10 +189,10 @@ return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String originalJapaneseName,  String romanizedJapaneseName,  String englishName,  String description,  YakuScoring scoring,  List<String> conditions,  List<MahjongTileSet> indexTiles,  List<List<MahjongTileSet>> variants)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String originalJapaneseName,  String romanizedJapaneseName,  String englishName,  String description,  TileDisplayMode tileDisplayMode,  YakuScoring scoring,  List<String> conditions,  List<MahjongTileSet> indexTiles,  List<List<MahjongTileSet>> variants)  $default,) {final _that = this;
 switch (_that) {
 case _YakuRecord():
-return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,_that.englishName,_that.description,_that.scoring,_that.conditions,_that.indexTiles,_that.variants);case _:
+return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,_that.englishName,_that.description,_that.tileDisplayMode,_that.scoring,_that.conditions,_that.indexTiles,_that.variants);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +209,10 @@ return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String originalJapaneseName,  String romanizedJapaneseName,  String englishName,  String description,  YakuScoring scoring,  List<String> conditions,  List<MahjongTileSet> indexTiles,  List<List<MahjongTileSet>> variants)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String originalJapaneseName,  String romanizedJapaneseName,  String englishName,  String description,  TileDisplayMode tileDisplayMode,  YakuScoring scoring,  List<String> conditions,  List<MahjongTileSet> indexTiles,  List<List<MahjongTileSet>> variants)?  $default,) {final _that = this;
 switch (_that) {
 case _YakuRecord() when $default != null:
-return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,_that.englishName,_that.description,_that.scoring,_that.conditions,_that.indexTiles,_that.variants);case _:
+return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,_that.englishName,_that.description,_that.tileDisplayMode,_that.scoring,_that.conditions,_that.indexTiles,_that.variants);case _:
   return null;
 
 }
@@ -223,7 +224,7 @@ return $default(_that.id,_that.originalJapaneseName,_that.romanizedJapaneseName,
 
 
 class _YakuRecord implements YakuRecord {
-  const _YakuRecord({required this.id, required this.originalJapaneseName, required this.romanizedJapaneseName, required this.englishName, required this.description, required this.scoring, required final  List<String> conditions, required final  List<MahjongTileSet> indexTiles, required final  List<List<MahjongTileSet>> variants}): _conditions = conditions,_indexTiles = indexTiles,_variants = variants;
+  const _YakuRecord({required this.id, required this.originalJapaneseName, required this.romanizedJapaneseName, required this.englishName, required this.description, required this.tileDisplayMode, required this.scoring, required final  List<String> conditions, required final  List<MahjongTileSet> indexTiles, required final  List<List<MahjongTileSet>> variants}): _conditions = conditions,_indexTiles = indexTiles,_variants = variants;
   
 
 @override final  String id;
@@ -231,6 +232,7 @@ class _YakuRecord implements YakuRecord {
 @override final  String romanizedJapaneseName;
 @override final  String englishName;
 @override final  String description;
+@override final  TileDisplayMode tileDisplayMode;
 @override final  YakuScoring scoring;
  final  List<String> _conditions;
 @override List<String> get conditions {
@@ -264,16 +266,16 @@ _$YakuRecordCopyWith<_YakuRecord> get copyWith => __$YakuRecordCopyWithImpl<_Yak
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _YakuRecord&&(identical(other.id, id) || other.id == id)&&(identical(other.originalJapaneseName, originalJapaneseName) || other.originalJapaneseName == originalJapaneseName)&&(identical(other.romanizedJapaneseName, romanizedJapaneseName) || other.romanizedJapaneseName == romanizedJapaneseName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.description, description) || other.description == description)&&(identical(other.scoring, scoring) || other.scoring == scoring)&&const DeepCollectionEquality().equals(other._conditions, _conditions)&&const DeepCollectionEquality().equals(other._indexTiles, _indexTiles)&&const DeepCollectionEquality().equals(other._variants, _variants));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _YakuRecord&&(identical(other.id, id) || other.id == id)&&(identical(other.originalJapaneseName, originalJapaneseName) || other.originalJapaneseName == originalJapaneseName)&&(identical(other.romanizedJapaneseName, romanizedJapaneseName) || other.romanizedJapaneseName == romanizedJapaneseName)&&(identical(other.englishName, englishName) || other.englishName == englishName)&&(identical(other.description, description) || other.description == description)&&(identical(other.tileDisplayMode, tileDisplayMode) || other.tileDisplayMode == tileDisplayMode)&&(identical(other.scoring, scoring) || other.scoring == scoring)&&const DeepCollectionEquality().equals(other._conditions, _conditions)&&const DeepCollectionEquality().equals(other._indexTiles, _indexTiles)&&const DeepCollectionEquality().equals(other._variants, _variants));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,originalJapaneseName,romanizedJapaneseName,englishName,description,scoring,const DeepCollectionEquality().hash(_conditions),const DeepCollectionEquality().hash(_indexTiles),const DeepCollectionEquality().hash(_variants));
+int get hashCode => Object.hash(runtimeType,id,originalJapaneseName,romanizedJapaneseName,englishName,description,tileDisplayMode,scoring,const DeepCollectionEquality().hash(_conditions),const DeepCollectionEquality().hash(_indexTiles),const DeepCollectionEquality().hash(_variants));
 
 @override
 String toString() {
-  return 'YakuRecord(id: $id, originalJapaneseName: $originalJapaneseName, romanizedJapaneseName: $romanizedJapaneseName, englishName: $englishName, description: $description, scoring: $scoring, conditions: $conditions, indexTiles: $indexTiles, variants: $variants)';
+  return 'YakuRecord(id: $id, originalJapaneseName: $originalJapaneseName, romanizedJapaneseName: $romanizedJapaneseName, englishName: $englishName, description: $description, tileDisplayMode: $tileDisplayMode, scoring: $scoring, conditions: $conditions, indexTiles: $indexTiles, variants: $variants)';
 }
 
 
@@ -284,7 +286,7 @@ abstract mixin class _$YakuRecordCopyWith<$Res> implements $YakuRecordCopyWith<$
   factory _$YakuRecordCopyWith(_YakuRecord value, $Res Function(_YakuRecord) _then) = __$YakuRecordCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String originalJapaneseName, String romanizedJapaneseName, String englishName, String description, YakuScoring scoring, List<String> conditions, List<MahjongTileSet> indexTiles, List<List<MahjongTileSet>> variants
+ String id, String originalJapaneseName, String romanizedJapaneseName, String englishName, String description, TileDisplayMode tileDisplayMode, YakuScoring scoring, List<String> conditions, List<MahjongTileSet> indexTiles, List<List<MahjongTileSet>> variants
 });
 
 
@@ -301,14 +303,15 @@ class __$YakuRecordCopyWithImpl<$Res>
 
 /// Create a copy of YakuRecord
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? originalJapaneseName = null,Object? romanizedJapaneseName = null,Object? englishName = null,Object? description = null,Object? scoring = null,Object? conditions = null,Object? indexTiles = null,Object? variants = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? originalJapaneseName = null,Object? romanizedJapaneseName = null,Object? englishName = null,Object? description = null,Object? tileDisplayMode = null,Object? scoring = null,Object? conditions = null,Object? indexTiles = null,Object? variants = null,}) {
   return _then(_YakuRecord(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,originalJapaneseName: null == originalJapaneseName ? _self.originalJapaneseName : originalJapaneseName // ignore: cast_nullable_to_non_nullable
 as String,romanizedJapaneseName: null == romanizedJapaneseName ? _self.romanizedJapaneseName : romanizedJapaneseName // ignore: cast_nullable_to_non_nullable
 as String,englishName: null == englishName ? _self.englishName : englishName // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,scoring: null == scoring ? _self.scoring : scoring // ignore: cast_nullable_to_non_nullable
+as String,tileDisplayMode: null == tileDisplayMode ? _self.tileDisplayMode : tileDisplayMode // ignore: cast_nullable_to_non_nullable
+as TileDisplayMode,scoring: null == scoring ? _self.scoring : scoring // ignore: cast_nullable_to_non_nullable
 as YakuScoring,conditions: null == conditions ? _self._conditions : conditions // ignore: cast_nullable_to_non_nullable
 as List<String>,indexTiles: null == indexTiles ? _self._indexTiles : indexTiles // ignore: cast_nullable_to_non_nullable
 as List<MahjongTileSet>,variants: null == variants ? _self._variants : variants // ignore: cast_nullable_to_non_nullable

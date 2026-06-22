@@ -838,6 +838,7 @@ yaku:
     romanized_japanese_name: "Kokushi Musou"
     english_name: "Thirteen Orphans"
     description: "One of each **terminal** and **honor** tile, plus a duplicate of one of them."
+    tile_display_mode: contiguous
     han: null
     is_yakuman: true
     yakuman_multiplier: 1
@@ -884,6 +885,7 @@ yaku:
     romanized_japanese_name: "Kokushi Musou Juusanmenmachi"
     english_name: "Thirteen Orphans, Thirteen-Sided Wait"
     description: "Kokushi Musou won while waiting on **all thirteen** terminal/honor tile types simultaneously."
+    tile_display_mode: contiguous
     han: null
     is_yakuman: true
     yakuman_multiplier: 2
