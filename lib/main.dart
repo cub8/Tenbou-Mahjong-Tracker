@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tenbou_mahjong/core/theme/app_colors.dart';
 import 'package:tenbou_mahjong/router/app_router.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 

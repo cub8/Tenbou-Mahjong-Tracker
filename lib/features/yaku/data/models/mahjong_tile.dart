@@ -42,7 +42,7 @@ enum MahjongTile {
   back;
 
   static MahjongTile fromString(String s) {
-    return _map[s] ?? (throw ArgumentError("Unknown tile: ${s}"));
+    return _map[s] ?? (throw ArgumentError("Unknown tile: $s"));
   }
 }
 

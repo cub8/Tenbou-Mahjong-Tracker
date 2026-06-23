@@ -1,0 +1,143 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:907595932263918476",
+      "lastPropertyId": "10:7486638956266334659",
+      "name": "GameEntity",
+      "properties": [
+        {
+          "id": "1:737475096414276404",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7589652053019775072",
+          "name": "eastPlayer",
+          "type": 9
+        },
+        {
+          "id": "3:2975273908801630025",
+          "name": "southPlayer",
+          "type": 9
+        },
+        {
+          "id": "4:1068399388595588162",
+          "name": "westPlayer",
+          "type": 9
+        },
+        {
+          "id": "5:5313502419701008441",
+          "name": "northPlayer",
+          "type": 9
+        },
+        {
+          "id": "6:4853849184206574338",
+          "name": "startingPoints",
+          "type": 6
+        },
+        {
+          "id": "7:8628301463649010145",
+          "name": "gameLength",
+          "type": 9
+        },
+        {
+          "id": "9:2116136395860185694",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "10:7486638956266334659",
+          "name": "endAtZeroPoints",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4008088130924136888",
+      "lastPropertyId": "12:4942640006393107928",
+      "name": "EventEntity",
+      "properties": [
+        {
+          "id": "1:4958936157777069915",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6323374622818562334",
+          "name": "gameId",
+          "type": 6
+        },
+        {
+          "id": "3:8416254442702912719",
+          "name": "index",
+          "type": 6
+        },
+        {
+          "id": "4:7649035335691155758",
+          "name": "wind",
+          "type": 9
+        },
+        {
+          "id": "5:2718454775486061211",
+          "name": "round",
+          "type": 6
+        },
+        {
+          "id": "6:1973947586645921053",
+          "name": "honba",
+          "type": 6
+        },
+        {
+          "id": "7:1935826849028341886",
+          "name": "endType",
+          "type": 9
+        },
+        {
+          "id": "8:4549540325991033019",
+          "name": "winnerJson",
+          "type": 9
+        },
+        {
+          "id": "9:3835434909280447315",
+          "name": "loser",
+          "type": 9
+        },
+        {
+          "id": "10:850113673712173560",
+          "name": "tenpai",
+          "type": 30
+        },
+        {
+          "id": "11:6764285853156245033",
+          "name": "riichiDeclarers",
+          "type": 30
+        },
+        {
+          "id": "12:4942640006393107928",
+          "name": "chonbo",
+          "type": 30
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:4008088130924136888",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    1019572773752152822
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}
