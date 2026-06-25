@@ -12,7 +12,7 @@ class EventEntity {
   int honba;
   String endType;
 
-  String winnerJson;
+  String winnersJson;
   String? loser;
   List<String> tenpai;
   List<String> riichiDeclarers;
@@ -26,7 +26,7 @@ class EventEntity {
     required this.round,
     required this.honba,
     required this.endType,
-    required this.winnerJson,
+    required this.winnersJson,
     this.loser,
     List<String>? tenpai,
     List<String>? riichiDeclarers,

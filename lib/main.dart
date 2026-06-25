@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tenbou_mahjong/core/database/objectbox.dart';
 import 'package:tenbou_mahjong/core/theme/app_colors.dart';
 import 'package:tenbou_mahjong/router/app_router.dart';
+import 'package:tenbou_mahjong/core/database/objectbox_provider.dart';
 
 Future<void> main() async {
-  runApp(const ProviderScope(child: MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  final objectBox = await ObjectBox.create();
+
+  runApp(
+    ProviderScope(
+      overrides: [objectBoxProvider.overrideWithValue(objectBox)],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

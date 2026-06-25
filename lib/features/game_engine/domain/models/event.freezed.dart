@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Event {
 
- int? get id; int get gameId; int get index; Wind get wind; int get round; int get honba; EndType get endType; List<PlayerRole> get winners; PlayerRole? get loser; List<PlayerRole> get tenpai; List<PlayerRole> get riichiDeclarers; List<PlayerRole> get chonbo;
+ int? get id; int get gameId; int get index; Wind get wind; int get round; int get honba; EndType get endType; List<Winner> get winners; PlayerRole? get loser; List<PlayerRole> get tenpai; List<PlayerRole> get riichiDeclarers; List<PlayerRole> get chonbo;
 /// Create a copy of Event
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $EventCopyWith<$Res>  {
   factory $EventCopyWith(Event value, $Res Function(Event) _then) = _$EventCopyWithImpl;
 @useResult
 $Res call({
- int? id, int gameId, int index, Wind wind, int round, int honba, EndType endType, List<PlayerRole> winners, PlayerRole? loser, List<PlayerRole> tenpai, List<PlayerRole> riichiDeclarers, List<PlayerRole> chonbo
+ int? id, int gameId, int index, Wind wind, int round, int honba, EndType endType, List<Winner> winners, PlayerRole? loser, List<PlayerRole> tenpai, List<PlayerRole> riichiDeclarers, List<PlayerRole> chonbo
 });
 
 
@@ -72,7 +72,7 @@ as Wind,round: null == round ? _self.round : round // ignore: cast_nullable_to_n
 as int,honba: null == honba ? _self.honba : honba // ignore: cast_nullable_to_non_nullable
 as int,endType: null == endType ? _self.endType : endType // ignore: cast_nullable_to_non_nullable
 as EndType,winners: null == winners ? _self.winners : winners // ignore: cast_nullable_to_non_nullable
-as List<PlayerRole>,loser: freezed == loser ? _self.loser : loser // ignore: cast_nullable_to_non_nullable
+as List<Winner>,loser: freezed == loser ? _self.loser : loser // ignore: cast_nullable_to_non_nullable
 as PlayerRole?,tenpai: null == tenpai ? _self.tenpai : tenpai // ignore: cast_nullable_to_non_nullable
 as List<PlayerRole>,riichiDeclarers: null == riichiDeclarers ? _self.riichiDeclarers : riichiDeclarers // ignore: cast_nullable_to_non_nullable
 as List<PlayerRole>,chonbo: null == chonbo ? _self.chonbo : chonbo // ignore: cast_nullable_to_non_nullable
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  int gameId,  int index,  Wind wind,  int round,  int honba,  EndType endType,  List<PlayerRole> winners,  PlayerRole? loser,  List<PlayerRole> tenpai,  List<PlayerRole> riichiDeclarers,  List<PlayerRole> chonbo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  int gameId,  int index,  Wind wind,  int round,  int honba,  EndType endType,  List<Winner> winners,  PlayerRole? loser,  List<PlayerRole> tenpai,  List<PlayerRole> riichiDeclarers,  List<PlayerRole> chonbo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Event() when $default != null:
 return $default(_that.id,_that.gameId,_that.index,_that.wind,_that.round,_that.honba,_that.endType,_that.winners,_that.loser,_that.tenpai,_that.riichiDeclarers,_that.chonbo);case _:
@@ -182,7 +182,7 @@ return $default(_that.id,_that.gameId,_that.index,_that.wind,_that.round,_that.h
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  int gameId,  int index,  Wind wind,  int round,  int honba,  EndType endType,  List<PlayerRole> winners,  PlayerRole? loser,  List<PlayerRole> tenpai,  List<PlayerRole> riichiDeclarers,  List<PlayerRole> chonbo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  int gameId,  int index,  Wind wind,  int round,  int honba,  EndType endType,  List<Winner> winners,  PlayerRole? loser,  List<PlayerRole> tenpai,  List<PlayerRole> riichiDeclarers,  List<PlayerRole> chonbo)  $default,) {final _that = this;
 switch (_that) {
 case _Event():
 return $default(_that.id,_that.gameId,_that.index,_that.wind,_that.round,_that.honba,_that.endType,_that.winners,_that.loser,_that.tenpai,_that.riichiDeclarers,_that.chonbo);case _:
@@ -202,7 +202,7 @@ return $default(_that.id,_that.gameId,_that.index,_that.wind,_that.round,_that.h
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  int gameId,  int index,  Wind wind,  int round,  int honba,  EndType endType,  List<PlayerRole> winners,  PlayerRole? loser,  List<PlayerRole> tenpai,  List<PlayerRole> riichiDeclarers,  List<PlayerRole> chonbo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  int gameId,  int index,  Wind wind,  int round,  int honba,  EndType endType,  List<Winner> winners,  PlayerRole? loser,  List<PlayerRole> tenpai,  List<PlayerRole> riichiDeclarers,  List<PlayerRole> chonbo)?  $default,) {final _that = this;
 switch (_that) {
 case _Event() when $default != null:
 return $default(_that.id,_that.gameId,_that.index,_that.wind,_that.round,_that.honba,_that.endType,_that.winners,_that.loser,_that.tenpai,_that.riichiDeclarers,_that.chonbo);case _:
@@ -217,7 +217,7 @@ return $default(_that.id,_that.gameId,_that.index,_that.wind,_that.round,_that.h
 
 
 class _Event implements Event {
-  const _Event({this.id, required this.gameId, required this.index, required this.wind, required this.round, required this.honba, required this.endType, final  List<PlayerRole> winners = const [], this.loser, final  List<PlayerRole> tenpai = const [], final  List<PlayerRole> riichiDeclarers = const [], final  List<PlayerRole> chonbo = const []}): _winners = winners,_tenpai = tenpai,_riichiDeclarers = riichiDeclarers,_chonbo = chonbo;
+  const _Event({this.id, required this.gameId, required this.index, required this.wind, required this.round, required this.honba, required this.endType, final  List<Winner> winners = const [], this.loser, final  List<PlayerRole> tenpai = const [], final  List<PlayerRole> riichiDeclarers = const [], final  List<PlayerRole> chonbo = const []}): _winners = winners,_tenpai = tenpai,_riichiDeclarers = riichiDeclarers,_chonbo = chonbo;
   
 
 @override final  int? id;
@@ -227,8 +227,8 @@ class _Event implements Event {
 @override final  int round;
 @override final  int honba;
 @override final  EndType endType;
- final  List<PlayerRole> _winners;
-@override@JsonKey() List<PlayerRole> get winners {
+ final  List<Winner> _winners;
+@override@JsonKey() List<Winner> get winners {
   if (_winners is EqualUnmodifiableListView) return _winners;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_winners);
@@ -287,7 +287,7 @@ abstract mixin class _$EventCopyWith<$Res> implements $EventCopyWith<$Res> {
   factory _$EventCopyWith(_Event value, $Res Function(_Event) _then) = __$EventCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, int gameId, int index, Wind wind, int round, int honba, EndType endType, List<PlayerRole> winners, PlayerRole? loser, List<PlayerRole> tenpai, List<PlayerRole> riichiDeclarers, List<PlayerRole> chonbo
+ int? id, int gameId, int index, Wind wind, int round, int honba, EndType endType, List<Winner> winners, PlayerRole? loser, List<PlayerRole> tenpai, List<PlayerRole> riichiDeclarers, List<PlayerRole> chonbo
 });
 
 
@@ -314,7 +314,7 @@ as Wind,round: null == round ? _self.round : round // ignore: cast_nullable_to_n
 as int,honba: null == honba ? _self.honba : honba // ignore: cast_nullable_to_non_nullable
 as int,endType: null == endType ? _self.endType : endType // ignore: cast_nullable_to_non_nullable
 as EndType,winners: null == winners ? _self._winners : winners // ignore: cast_nullable_to_non_nullable
-as List<PlayerRole>,loser: freezed == loser ? _self.loser : loser // ignore: cast_nullable_to_non_nullable
+as List<Winner>,loser: freezed == loser ? _self.loser : loser // ignore: cast_nullable_to_non_nullable
 as PlayerRole?,tenpai: null == tenpai ? _self._tenpai : tenpai // ignore: cast_nullable_to_non_nullable
 as List<PlayerRole>,riichiDeclarers: null == riichiDeclarers ? _self._riichiDeclarers : riichiDeclarers // ignore: cast_nullable_to_non_nullable
 as List<PlayerRole>,chonbo: null == chonbo ? _self._chonbo : chonbo // ignore: cast_nullable_to_non_nullable

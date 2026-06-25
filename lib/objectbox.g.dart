@@ -87,7 +87,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(2, 4008088130924136888),
     name: 'EventEntity',
-    lastPropertyId: const obx_int.IdUid(12, 4942640006393107928),
+    lastPropertyId: const obx_int.IdUid(13, 1333458386656719649),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -133,12 +133,6 @@ final _entities = <obx_int.ModelEntity>[
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(8, 4549540325991033019),
-        name: 'winnerJson',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
         id: const obx_int.IdUid(9, 3835434909280447315),
         name: 'loser',
         type: 9,
@@ -160,6 +154,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(12, 4942640006393107928),
         name: 'chonbo',
         type: 30,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 1333458386656719649),
+        name: 'winnersJson',
+        type: 9,
         flags: 0,
       ),
     ],
@@ -217,7 +217,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
     retiredIndexUids: const [],
-    retiredPropertyUids: const [1019572773752152822],
+    retiredPropertyUids: const [1019572773752152822, 4549540325991033019],
     retiredRelationUids: const [],
     modelVersion: 5,
     modelVersionParserMinimum: 5,
@@ -317,7 +317,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectToFB: (EventEntity object, fb.Builder fbb) {
         final windOffset = fbb.writeString(object.wind);
         final endTypeOffset = fbb.writeString(object.endType);
-        final winnerJsonOffset = fbb.writeString(object.winnerJson);
         final loserOffset = object.loser == null
             ? null
             : fbb.writeString(object.loser!);
@@ -330,7 +329,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final chonboOffset = fbb.writeList(
           object.chonbo.map(fbb.writeString).toList(growable: false),
         );
-        fbb.startTable(13);
+        final winnersJsonOffset = fbb.writeString(object.winnersJson);
+        fbb.startTable(14);
         fbb.addInt64(0, object.id);
         fbb.addInt64(1, object.gameId);
         fbb.addInt64(2, object.index);
@@ -338,11 +338,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(4, object.round);
         fbb.addInt64(5, object.honba);
         fbb.addOffset(6, endTypeOffset);
-        fbb.addOffset(7, winnerJsonOffset);
         fbb.addOffset(8, loserOffset);
         fbb.addOffset(9, tenpaiOffset);
         fbb.addOffset(10, riichiDeclarersOffset);
         fbb.addOffset(11, chonboOffset);
+        fbb.addOffset(12, winnersJsonOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -385,9 +385,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final endTypeParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 16, '');
-        final winnerJsonParam = const fb.StringReader(
+        final winnersJsonParam = const fb.StringReader(
           asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 18, '');
+        ).vTableGet(buffer, rootOffset, 28, '');
         final loserParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 20);
@@ -411,7 +411,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           round: roundParam,
           honba: honbaParam,
           endType: endTypeParam,
-          winnerJson: winnerJsonParam,
+          winnersJson: winnersJsonParam,
           loser: loserParam,
           tenpai: tenpaiParam,
           riichiDeclarers: riichiDeclarersParam,
@@ -511,28 +511,28 @@ class EventEntity_ {
     _entities[1].properties[6],
   );
 
-  /// See [EventEntity.winnerJson].
-  static final winnerJson = obx.QueryStringProperty<EventEntity>(
-    _entities[1].properties[7],
-  );
-
   /// See [EventEntity.loser].
   static final loser = obx.QueryStringProperty<EventEntity>(
-    _entities[1].properties[8],
+    _entities[1].properties[7],
   );
 
   /// See [EventEntity.tenpai].
   static final tenpai = obx.QueryStringVectorProperty<EventEntity>(
-    _entities[1].properties[9],
+    _entities[1].properties[8],
   );
 
   /// See [EventEntity.riichiDeclarers].
   static final riichiDeclarers = obx.QueryStringVectorProperty<EventEntity>(
-    _entities[1].properties[10],
+    _entities[1].properties[9],
   );
 
   /// See [EventEntity.chonbo].
   static final chonbo = obx.QueryStringVectorProperty<EventEntity>(
+    _entities[1].properties[10],
+  );
+
+  /// See [EventEntity.winnersJson].
+  static final winnersJson = obx.QueryStringProperty<EventEntity>(
     _entities[1].properties[11],
   );
 }

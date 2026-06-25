@@ -59,7 +59,7 @@
     },
     {
       "id": "2:4008088130924136888",
-      "lastPropertyId": "12:4942640006393107928",
+      "lastPropertyId": "13:1333458386656719649",
       "name": "EventEntity",
       "properties": [
         {
@@ -99,11 +99,6 @@
           "type": 9
         },
         {
-          "id": "8:4549540325991033019",
-          "name": "winnerJson",
-          "type": 9
-        },
-        {
           "id": "9:3835434909280447315",
           "name": "loser",
           "type": 9
@@ -122,6 +117,11 @@
           "id": "12:4942640006393107928",
           "name": "chonbo",
           "type": 30
+        },
+        {
+          "id": "13:1333458386656719649",
+          "name": "winnersJson",
+          "type": 9
         }
       ],
       "relations": []
@@ -136,7 +136,8 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    1019572773752152822
+    1019572773752152822,
+    4549540325991033019
   ],
   "retiredRelationUids": [],
   "version": 1
