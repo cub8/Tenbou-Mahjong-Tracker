@@ -12,6 +12,7 @@ abstract class GameRepository {
   Future<Game?> getGameById(int id);
   Future<Game> createGame(Game game);
   Future<void> deleteGame(int id);
+  Future<void> finishGame(int id);
 
   Future<List<Event>> getEventsForGame(int gameId);
   Future<Event> createEvent(Event event);

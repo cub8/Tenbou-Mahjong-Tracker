@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tenbou_mahjong/features/app_shell/presentation/widgets/main_shell.dart';
+import 'package:tenbou_mahjong/features/game_session/presentation/pages/game_detail_page.dart';
 import 'package:tenbou_mahjong/features/game_session/presentation/pages/game_list_page.dart';
 import 'package:tenbou_mahjong/features/yaku/presentation/pages/yaku_list_page.dart';
 import 'package:tenbou_mahjong/features/yaku/presentation/pages/yaku_page.dart';
@@ -11,7 +12,12 @@ part 'app_router.g.dart';
   branches: [
     TypedStatefulShellBranch<GamesBranchData>(
       routes: [
-        TypedGoRoute<GamesRoute>(path: '/games'),
+        TypedGoRoute<GamesRoute>(
+          path: '/games',
+          routes: [
+            TypedGoRoute<GameDetailRoute>(path: ':id'),
+          ],
+        ),
       ],
     ),
     TypedStatefulShellBranch<YakuBranchData>(
@@ -52,6 +58,16 @@ class GamesRoute extends GoRouteData with $GamesRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const GameListPage();
+}
+
+class GameDetailRoute extends GoRouteData with $GameDetailRoute {
+  const GameDetailRoute({required this.id});
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      GameDetailPage(gameId: int.parse(id));
 }
 
 class YakuListRoute extends GoRouteData with $YakuListRoute {

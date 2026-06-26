@@ -45,6 +45,14 @@ class GameRepositoryImpl implements GameRepository {
   }
 
   @override
+  Future<void> finishGame(int id) async {
+    final entity = _gameDataSource.getById(id);
+    if (entity == null) return;
+    entity.isFinished = true;
+    _gameDataSource.put(entity);
+  }
+
+  @override
   Future<List<Event>> getEventsForGame(int gameId) async {
     return _eventDataSource
         .getAllForGame(gameId)

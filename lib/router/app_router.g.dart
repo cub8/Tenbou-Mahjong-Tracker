@@ -13,7 +13,16 @@ RouteBase get $appShellRouteData => StatefulShellRouteData.$route(
   branches: [
     StatefulShellBranchData.$branch(
       routes: [
-        GoRouteData.$route(path: '/games', factory: $GamesRoute._fromState),
+        GoRouteData.$route(
+          path: '/games',
+          factory: $GamesRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: ':id',
+              factory: $GameDetailRoute._fromState,
+            ),
+          ],
+        ),
       ],
     ),
     StatefulShellBranchData.$branch(
@@ -43,6 +52,30 @@ mixin $GamesRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/games');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $GameDetailRoute on GoRouteData {
+  static GameDetailRoute _fromState(GoRouterState state) =>
+      GameDetailRoute(id: state.pathParameters['id']!);
+
+  GameDetailRoute get _self => this as GameDetailRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/games/${Uri.encodeComponent(_self.id)}');
 
   @override
   void go(BuildContext context) => context.go(location);

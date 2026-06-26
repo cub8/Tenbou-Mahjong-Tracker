@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tenbou_mahjong/core/utils/date_formatter.dart';
 import 'package:tenbou_mahjong/core/utils/string_utils.dart';
 import 'package:tenbou_mahjong/features/game_engine/domain/models/game.dart';
+import 'package:tenbou_mahjong/router/app_router.dart';
 
 class GameListItemWidget extends StatelessWidget {
   final Game game;
@@ -24,8 +25,7 @@ class GameListItemWidget extends StatelessWidget {
     ].map(truncateWithEllipsis).join(', ');
 
     return InkWell(
-      // TODO: nawigacja do widoku gry (GameDetailRoute) — po jego utworzeniu
-      onTap: () {},
+      onTap: () => GameDetailRoute(id: '${game.id}').push(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Row(
@@ -50,20 +50,26 @@ class GameListItemWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset('assets/images/game/east.svg', width: 32),
-                const SizedBox(width: 6),
-                Text(
-                  roundLabel,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+            if (game.isFinished)
+              const Text(
+                'Finished',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )
+            else
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset('assets/images/game/east.svg', width: 32),
+                  const SizedBox(width: 6),
+                  Text(
+                    roundLabel,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),

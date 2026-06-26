@@ -52,7 +52,7 @@ class _CreateGameDialogState extends ConsumerState<CreateGameDialog>
       return;
     }
 
-    await ref
+    final game = await ref
         .read(createGameUseCaseProvider)
         .call(
           eastPlayer: _eastController.text,
@@ -64,8 +64,7 @@ class _CreateGameDialogState extends ConsumerState<CreateGameDialog>
           endAtZeroPoints: _endAtZeroPoints,
         );
 
-    // TODO: nawigacja na widok gry po jego utworzeniu
-    if (mounted) Navigator.pop(context, true);
+    if (mounted) Navigator.pop(context, game);
   }
 
   @override
