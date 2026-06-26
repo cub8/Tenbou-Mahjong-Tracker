@@ -74,6 +74,7 @@ class GameRepositoryImpl implements GameRepository {
       startingPoints: entity.startingPoints,
       gameLength: GameLength.values.byName(entity.gameLength),
       endAtZeroPoints: entity.endAtZeroPoints,
+      isFinished: entity.isFinished,
       createdAt: entity.createdAt,
     );
   }
@@ -88,6 +89,7 @@ class GameRepositoryImpl implements GameRepository {
       startingPoints: game.startingPoints,
       gameLength: game.gameLength.name,
       endAtZeroPoints: game.endAtZeroPoints,
+      isFinished: game.isFinished,
       createdAt: game.createdAt,
     );
   }

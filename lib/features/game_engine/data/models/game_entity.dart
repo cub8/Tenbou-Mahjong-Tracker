@@ -13,6 +13,7 @@ class GameEntity {
   int startingPoints;
   String gameLength;
   bool endAtZeroPoints;
+  bool isFinished;
 
   @Property(type: PropertyType.date)
   DateTime createdAt;
@@ -27,5 +28,6 @@ class GameEntity {
     required this.gameLength,
     required this.endAtZeroPoints,
     required this.createdAt,
+    required this.isFinished,
   });
 }

@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 907595932263918476),
     name: 'GameEntity',
-    lastPropertyId: const obx_int.IdUid(10, 7486638956266334659),
+    lastPropertyId: const obx_int.IdUid(11, 2757961391923200468),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -77,6 +77,12 @@ final _entities = <obx_int.ModelEntity>[
       obx_int.ModelProperty(
         id: const obx_int.IdUid(10, 7486638956266334659),
         name: 'endAtZeroPoints',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 2757961391923200468),
+        name: 'isFinished',
         type: 1,
         flags: 0,
       ),
@@ -239,7 +245,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final westPlayerOffset = fbb.writeString(object.westPlayer);
         final northPlayerOffset = fbb.writeString(object.northPlayer);
         final gameLengthOffset = fbb.writeString(object.gameLength);
-        fbb.startTable(11);
+        fbb.startTable(12);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, eastPlayerOffset);
         fbb.addOffset(2, southPlayerOffset);
@@ -249,6 +255,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(6, gameLengthOffset);
         fbb.addInt64(8, object.createdAt.millisecondsSinceEpoch);
         fbb.addBool(9, object.endAtZeroPoints);
+        fbb.addBool(10, object.isFinished);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -291,6 +298,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
           const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0),
         );
+        final isFinishedParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          24,
+          false,
+        );
         final object = GameEntity(
           id: idParam,
           eastPlayer: eastPlayerParam,
@@ -301,6 +314,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           gameLength: gameLengthParam,
           endAtZeroPoints: endAtZeroPointsParam,
           createdAt: createdAtParam,
+          isFinished: isFinishedParam,
         );
 
         return object;
@@ -471,6 +485,11 @@ class GameEntity_ {
   /// See [GameEntity.endAtZeroPoints].
   static final endAtZeroPoints = obx.QueryBooleanProperty<GameEntity>(
     _entities[0].properties[8],
+  );
+
+  /// See [GameEntity.isFinished].
+  static final isFinished = obx.QueryBooleanProperty<GameEntity>(
+    _entities[0].properties[9],
   );
 }
 

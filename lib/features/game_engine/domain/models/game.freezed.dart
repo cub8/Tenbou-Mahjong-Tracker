@@ -18,7 +18,7 @@ mixin _$Game {
  String get southPlayer;// equivalent of PlayerRole.b
  String get westPlayer;// equivalent of PlayerRole.c
  String get northPlayer;// equivalent of PlayerRole.d
- int get startingPoints; GameLength get gameLength; bool get endAtZeroPoints; DateTime get createdAt;
+ int get startingPoints; GameLength get gameLength; bool get endAtZeroPoints; DateTime get createdAt; bool get isFinished;
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $GameCopyWith<Game> get copyWith => _$GameCopyWithImpl<Game>(this as Game, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Game&&(identical(other.id, id) || other.id == id)&&(identical(other.eastPlayer, eastPlayer) || other.eastPlayer == eastPlayer)&&(identical(other.southPlayer, southPlayer) || other.southPlayer == southPlayer)&&(identical(other.westPlayer, westPlayer) || other.westPlayer == westPlayer)&&(identical(other.northPlayer, northPlayer) || other.northPlayer == northPlayer)&&(identical(other.startingPoints, startingPoints) || other.startingPoints == startingPoints)&&(identical(other.gameLength, gameLength) || other.gameLength == gameLength)&&(identical(other.endAtZeroPoints, endAtZeroPoints) || other.endAtZeroPoints == endAtZeroPoints)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Game&&(identical(other.id, id) || other.id == id)&&(identical(other.eastPlayer, eastPlayer) || other.eastPlayer == eastPlayer)&&(identical(other.southPlayer, southPlayer) || other.southPlayer == southPlayer)&&(identical(other.westPlayer, westPlayer) || other.westPlayer == westPlayer)&&(identical(other.northPlayer, northPlayer) || other.northPlayer == northPlayer)&&(identical(other.startingPoints, startingPoints) || other.startingPoints == startingPoints)&&(identical(other.gameLength, gameLength) || other.gameLength == gameLength)&&(identical(other.endAtZeroPoints, endAtZeroPoints) || other.endAtZeroPoints == endAtZeroPoints)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isFinished, isFinished) || other.isFinished == isFinished));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,eastPlayer,southPlayer,westPlayer,northPlayer,startingPoints,gameLength,endAtZeroPoints,createdAt);
+int get hashCode => Object.hash(runtimeType,id,eastPlayer,southPlayer,westPlayer,northPlayer,startingPoints,gameLength,endAtZeroPoints,createdAt,isFinished);
 
 @override
 String toString() {
-  return 'Game(id: $id, eastPlayer: $eastPlayer, southPlayer: $southPlayer, westPlayer: $westPlayer, northPlayer: $northPlayer, startingPoints: $startingPoints, gameLength: $gameLength, endAtZeroPoints: $endAtZeroPoints, createdAt: $createdAt)';
+  return 'Game(id: $id, eastPlayer: $eastPlayer, southPlayer: $southPlayer, westPlayer: $westPlayer, northPlayer: $northPlayer, startingPoints: $startingPoints, gameLength: $gameLength, endAtZeroPoints: $endAtZeroPoints, createdAt: $createdAt, isFinished: $isFinished)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $GameCopyWith<$Res>  {
   factory $GameCopyWith(Game value, $Res Function(Game) _then) = _$GameCopyWithImpl;
 @useResult
 $Res call({
- int? id, String eastPlayer, String southPlayer, String westPlayer, String northPlayer, int startingPoints, GameLength gameLength, bool endAtZeroPoints, DateTime createdAt
+ int? id, String eastPlayer, String southPlayer, String westPlayer, String northPlayer, int startingPoints, GameLength gameLength, bool endAtZeroPoints, DateTime createdAt, bool isFinished
 });
 
 
@@ -66,7 +66,7 @@ class _$GameCopyWithImpl<$Res>
 
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? eastPlayer = null,Object? southPlayer = null,Object? westPlayer = null,Object? northPlayer = null,Object? startingPoints = null,Object? gameLength = null,Object? endAtZeroPoints = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? eastPlayer = null,Object? southPlayer = null,Object? westPlayer = null,Object? northPlayer = null,Object? startingPoints = null,Object? gameLength = null,Object? endAtZeroPoints = null,Object? createdAt = null,Object? isFinished = null,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,eastPlayer: null == eastPlayer ? _self.eastPlayer : eastPlayer // ignore: cast_nullable_to_non_nullable
@@ -77,7 +77,8 @@ as String,startingPoints: null == startingPoints ? _self.startingPoints : starti
 as int,gameLength: null == gameLength ? _self.gameLength : gameLength // ignore: cast_nullable_to_non_nullable
 as GameLength,endAtZeroPoints: null == endAtZeroPoints ? _self.endAtZeroPoints : endAtZeroPoints // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,isFinished: null == isFinished ? _self.isFinished : isFinished // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -162,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String eastPlayer,  String southPlayer,  String westPlayer,  String northPlayer,  int startingPoints,  GameLength gameLength,  bool endAtZeroPoints,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String eastPlayer,  String southPlayer,  String westPlayer,  String northPlayer,  int startingPoints,  GameLength gameLength,  bool endAtZeroPoints,  DateTime createdAt,  bool isFinished)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Game() when $default != null:
-return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_that.northPlayer,_that.startingPoints,_that.gameLength,_that.endAtZeroPoints,_that.createdAt);case _:
+return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_that.northPlayer,_that.startingPoints,_that.gameLength,_that.endAtZeroPoints,_that.createdAt,_that.isFinished);case _:
   return orElse();
 
 }
@@ -183,10 +184,10 @@ return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String eastPlayer,  String southPlayer,  String westPlayer,  String northPlayer,  int startingPoints,  GameLength gameLength,  bool endAtZeroPoints,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String eastPlayer,  String southPlayer,  String westPlayer,  String northPlayer,  int startingPoints,  GameLength gameLength,  bool endAtZeroPoints,  DateTime createdAt,  bool isFinished)  $default,) {final _that = this;
 switch (_that) {
 case _Game():
-return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_that.northPlayer,_that.startingPoints,_that.gameLength,_that.endAtZeroPoints,_that.createdAt);case _:
+return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_that.northPlayer,_that.startingPoints,_that.gameLength,_that.endAtZeroPoints,_that.createdAt,_that.isFinished);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +204,10 @@ return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String eastPlayer,  String southPlayer,  String westPlayer,  String northPlayer,  int startingPoints,  GameLength gameLength,  bool endAtZeroPoints,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String eastPlayer,  String southPlayer,  String westPlayer,  String northPlayer,  int startingPoints,  GameLength gameLength,  bool endAtZeroPoints,  DateTime createdAt,  bool isFinished)?  $default,) {final _that = this;
 switch (_that) {
 case _Game() when $default != null:
-return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_that.northPlayer,_that.startingPoints,_that.gameLength,_that.endAtZeroPoints,_that.createdAt);case _:
+return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_that.northPlayer,_that.startingPoints,_that.gameLength,_that.endAtZeroPoints,_that.createdAt,_that.isFinished);case _:
   return null;
 
 }
@@ -218,7 +219,7 @@ return $default(_that.id,_that.eastPlayer,_that.southPlayer,_that.westPlayer,_th
 
 
 class _Game implements Game {
-  const _Game({this.id, required this.eastPlayer, required this.southPlayer, required this.westPlayer, required this.northPlayer, required this.startingPoints, required this.gameLength, required this.endAtZeroPoints, required this.createdAt});
+  const _Game({this.id, required this.eastPlayer, required this.southPlayer, required this.westPlayer, required this.northPlayer, required this.startingPoints, required this.gameLength, required this.endAtZeroPoints, required this.createdAt, this.isFinished = false});
   
 
 @override final  int? id;
@@ -234,6 +235,7 @@ class _Game implements Game {
 @override final  GameLength gameLength;
 @override final  bool endAtZeroPoints;
 @override final  DateTime createdAt;
+@override@JsonKey() final  bool isFinished;
 
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +247,16 @@ _$GameCopyWith<_Game> get copyWith => __$GameCopyWithImpl<_Game>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Game&&(identical(other.id, id) || other.id == id)&&(identical(other.eastPlayer, eastPlayer) || other.eastPlayer == eastPlayer)&&(identical(other.southPlayer, southPlayer) || other.southPlayer == southPlayer)&&(identical(other.westPlayer, westPlayer) || other.westPlayer == westPlayer)&&(identical(other.northPlayer, northPlayer) || other.northPlayer == northPlayer)&&(identical(other.startingPoints, startingPoints) || other.startingPoints == startingPoints)&&(identical(other.gameLength, gameLength) || other.gameLength == gameLength)&&(identical(other.endAtZeroPoints, endAtZeroPoints) || other.endAtZeroPoints == endAtZeroPoints)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Game&&(identical(other.id, id) || other.id == id)&&(identical(other.eastPlayer, eastPlayer) || other.eastPlayer == eastPlayer)&&(identical(other.southPlayer, southPlayer) || other.southPlayer == southPlayer)&&(identical(other.westPlayer, westPlayer) || other.westPlayer == westPlayer)&&(identical(other.northPlayer, northPlayer) || other.northPlayer == northPlayer)&&(identical(other.startingPoints, startingPoints) || other.startingPoints == startingPoints)&&(identical(other.gameLength, gameLength) || other.gameLength == gameLength)&&(identical(other.endAtZeroPoints, endAtZeroPoints) || other.endAtZeroPoints == endAtZeroPoints)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isFinished, isFinished) || other.isFinished == isFinished));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,eastPlayer,southPlayer,westPlayer,northPlayer,startingPoints,gameLength,endAtZeroPoints,createdAt);
+int get hashCode => Object.hash(runtimeType,id,eastPlayer,southPlayer,westPlayer,northPlayer,startingPoints,gameLength,endAtZeroPoints,createdAt,isFinished);
 
 @override
 String toString() {
-  return 'Game(id: $id, eastPlayer: $eastPlayer, southPlayer: $southPlayer, westPlayer: $westPlayer, northPlayer: $northPlayer, startingPoints: $startingPoints, gameLength: $gameLength, endAtZeroPoints: $endAtZeroPoints, createdAt: $createdAt)';
+  return 'Game(id: $id, eastPlayer: $eastPlayer, southPlayer: $southPlayer, westPlayer: $westPlayer, northPlayer: $northPlayer, startingPoints: $startingPoints, gameLength: $gameLength, endAtZeroPoints: $endAtZeroPoints, createdAt: $createdAt, isFinished: $isFinished)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$GameCopyWith<$Res> implements $GameCopyWith<$Res> {
   factory _$GameCopyWith(_Game value, $Res Function(_Game) _then) = __$GameCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String eastPlayer, String southPlayer, String westPlayer, String northPlayer, int startingPoints, GameLength gameLength, bool endAtZeroPoints, DateTime createdAt
+ int? id, String eastPlayer, String southPlayer, String westPlayer, String northPlayer, int startingPoints, GameLength gameLength, bool endAtZeroPoints, DateTime createdAt, bool isFinished
 });
 
 
@@ -282,7 +284,7 @@ class __$GameCopyWithImpl<$Res>
 
 /// Create a copy of Game
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? eastPlayer = null,Object? southPlayer = null,Object? westPlayer = null,Object? northPlayer = null,Object? startingPoints = null,Object? gameLength = null,Object? endAtZeroPoints = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? eastPlayer = null,Object? southPlayer = null,Object? westPlayer = null,Object? northPlayer = null,Object? startingPoints = null,Object? gameLength = null,Object? endAtZeroPoints = null,Object? createdAt = null,Object? isFinished = null,}) {
   return _then(_Game(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,eastPlayer: null == eastPlayer ? _self.eastPlayer : eastPlayer // ignore: cast_nullable_to_non_nullable
@@ -293,7 +295,8 @@ as String,startingPoints: null == startingPoints ? _self.startingPoints : starti
 as int,gameLength: null == gameLength ? _self.gameLength : gameLength // ignore: cast_nullable_to_non_nullable
 as GameLength,endAtZeroPoints: null == endAtZeroPoints ? _self.endAtZeroPoints : endAtZeroPoints // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,isFinished: null == isFinished ? _self.isFinished : isFinished // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

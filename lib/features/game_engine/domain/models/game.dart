@@ -14,5 +14,6 @@ abstract class Game with _$Game {
     required GameLength gameLength,
     required bool endAtZeroPoints,
     required DateTime createdAt,
+    @Default(false) bool isFinished,
   }) = _Game;
 }

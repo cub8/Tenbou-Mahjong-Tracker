@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:907595932263918476",
-      "lastPropertyId": "10:7486638956266334659",
+      "lastPropertyId": "11:2757961391923200468",
       "name": "GameEntity",
       "properties": [
         {
@@ -52,6 +52,11 @@
         {
           "id": "10:7486638956266334659",
           "name": "endAtZeroPoints",
+          "type": 1
+        },
+        {
+          "id": "11:2757961391923200468",
+          "name": "isFinished",
           "type": 1
         }
       ],
