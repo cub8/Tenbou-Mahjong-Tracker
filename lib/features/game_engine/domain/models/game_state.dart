@@ -11,6 +11,7 @@ abstract class GameState with _$GameState {
     required int round,
     required int honba,
     required int riichiSticks,
+    required bool isFinished,
   }) = _GameState;
 
   const GameState._();
