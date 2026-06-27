@@ -1,6 +1,5 @@
 import 'package:tenbou_mahjong/features/game_engine/domain/models/winning_hand.dart';
 
-/// Score for a hand won by the dealer.
 class DealerHandScore {
   final int? ronTotal;
   final int tsumoEach;
@@ -8,7 +7,6 @@ class DealerHandScore {
   const DealerHandScore({this.ronTotal, required this.tsumoEach});
 }
 
-/// Score for a hand won by a non-dealer.
 class NonDealerHandScore {
   final int? ronTotal;
   final int tsumoFromDealer;
