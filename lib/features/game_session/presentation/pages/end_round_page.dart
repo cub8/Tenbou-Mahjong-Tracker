@@ -163,7 +163,7 @@ class _EndRoundPageState extends ConsumerState<EndRoundPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedType == null ? 'End round' : _promptText()),
+        title: const Text('End round'),
       ),
       body: bundleAsync.when(
         data: (bundle) => GameBoardScaffold(
@@ -203,9 +203,18 @@ class _EndRoundPageState extends ConsumerState<EndRoundPage> {
     _Phase.chonbo => 'Who made the mistake?',
   };
 
+  double get _promptMaxWidth => _currentPhase == _Phase.riichi ? 130 : 190;
+
   Widget _buildCenter() {
     if (_selectedType == null) return _buildTypePicker();
-    return const SizedBox.shrink();
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: _promptMaxWidth),
+      child: Text(
+        _promptText(),
+        textAlign: TextAlign.center,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+      ),
+    );
   }
 
   Widget _buildTypePicker() {
