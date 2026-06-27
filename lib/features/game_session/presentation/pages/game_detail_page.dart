@@ -5,6 +5,7 @@ import 'package:tenbou_mahjong/features/game_session/domain/usecases/finish_game
 import 'package:tenbou_mahjong/features/game_session/presentation/pages/game_list_page.dart';
 import 'package:tenbou_mahjong/features/game_session/presentation/providers/game_state_provider.dart';
 import 'package:tenbou_mahjong/features/game_session/presentation/widgets/game_board_widget.dart';
+import 'package:tenbou_mahjong/features/game_session/presentation/widgets/scoreboard_widget.dart';
 import 'package:tenbou_mahjong/router/app_router.dart';
 
 enum _GameMenuAction { endGame, deleteGame }
@@ -56,25 +57,39 @@ class GameDetailPage extends ConsumerWidget {
                 isFinished: bundle.game.isFinished || bundle.state.isFinished,
                 startingPoints: bundle.game.startingPoints,
               ),
-              const Center(child: Text('Scoreboard — coming soon')),
+              ScoreboardWidget(gameId: gameId),
             ],
           ),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stackTrace) => Center(child: Text('Error: $error')),
         ),
-        floatingActionButton: bundleAsync.maybeWhen(
-          data: (bundle) => (bundle.game.isFinished || bundle.state.isFinished)
-              ? null
-              : FloatingActionButton.small(
-                  tooltip: 'End round',
-                  onPressed: () async {
-                    await EndRoundRoute(id: '$gameId').push(context);
-                    ref.invalidate(gameStateProvider(gameId));
-                    ref.invalidate(gamesProvider);
-                  },
-                  child: const Icon(Icons.check),
-                ),
-          orElse: () => null,
+        floatingActionButton: Builder(
+          builder: (context) {
+            final tabController = DefaultTabController.of(context);
+            return AnimatedBuilder(
+              animation: tabController,
+              builder: (context, _) {
+                if (tabController.index != 0) return const SizedBox.shrink();
+                return bundleAsync.maybeWhen(
+                      data: (bundle) =>
+                          (bundle.game.isFinished || bundle.state.isFinished)
+                          ? null
+                          : FloatingActionButton.small(
+                              tooltip: 'End round',
+                              onPressed: () async {
+                                await EndRoundRoute(id: '$gameId').push(context);
+                                ref.invalidate(gameStateProvider(gameId));
+                                ref.invalidate(scoreHistoryProvider(gameId));
+                                ref.invalidate(gamesProvider);
+                              },
+                              child: const Icon(Icons.check),
+                            ),
+                      orElse: () => null,
+                    ) ??
+                    const SizedBox.shrink();
+              },
+            );
+          },
         ),
       ),
     );
@@ -101,6 +116,7 @@ class GameDetailPage extends ConsumerWidget {
 
     await ref.read(finishGameUseCaseProvider)(gameId);
     ref.invalidate(gameStateProvider(gameId));
+    ref.invalidate(scoreHistoryProvider(gameId));
     ref.invalidate(gamesProvider);
   }
 

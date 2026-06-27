@@ -42,6 +42,22 @@ void main() {
     expect(total + result.riichiSticks - sticksBefore, 0);
   }
 
+  void expectSplitInvariants(PayoutResult result, int sticksBefore) {
+    // Hand transfers are always zero-sum; carried riichi sticks flow through
+    // the side deltas, so those net to (sticksBefore - sticksAfter).
+    expect(result.handDeltas.values.fold(0, (a, b) => a + b), 0);
+    expect(
+      result.sideDeltas.values.fold(0, (a, b) => a + b),
+      sticksBefore - result.riichiSticks,
+    );
+    for (final role in PlayerRole.values) {
+      expect(
+        (result.handDeltas[role] ?? 0) + (result.sideDeltas[role] ?? 0),
+        result.deltas[role],
+      );
+    }
+  }
+
   test('non-dealer ron, no honba or riichi', () {
     final result = useCase(
       event: event(
@@ -179,5 +195,97 @@ void main() {
     expect(result.deltas[PlayerRole.a], -1000); // riichi declaration
     expect(result.riichiSticks, 0);
     expectSumZero(result, 0);
+  });
+
+  test('hand deltas are zero-sum and split adds back to deltas', () {
+    final cases = <(PayoutResult, int)>[
+      (
+        useCase(
+          event: event(
+            endType: EndType.ron,
+            winners: [win(PlayerRole.b)],
+            loser: PlayerRole.c,
+            honba: 2,
+            riichiDeclarers: [PlayerRole.d],
+          ),
+          dealer: PlayerRole.a,
+          riichiSticksOnTable: 1000,
+        ),
+        1000,
+      ),
+      (
+        useCase(
+          event: event(
+            endType: EndType.tsumo,
+            winners: [win(PlayerRole.b)],
+            honba: 1,
+            riichiDeclarers: [PlayerRole.a],
+          ),
+          dealer: PlayerRole.a,
+          riichiSticksOnTable: 0,
+        ),
+        0,
+      ),
+      (
+        useCase(
+          event: event(
+            endType: EndType.ryuukyoku,
+            tenpai: [PlayerRole.a, PlayerRole.b],
+            riichiDeclarers: [PlayerRole.a],
+          ),
+          dealer: PlayerRole.a,
+          riichiSticksOnTable: 1000,
+        ),
+        1000,
+      ),
+      (
+        useCase(
+          event: event(endType: EndType.chonbo, chonbo: [PlayerRole.b]),
+          dealer: PlayerRole.a,
+          riichiSticksOnTable: 1000,
+        ),
+        1000,
+      ),
+    ];
+    for (final (result, sticksBefore) in cases) {
+      expectSplitInvariants(result, sticksBefore);
+    }
+  });
+
+  test('non-dealer ron honba=2: hand is clean +/-1000, honba sits in side', () {
+    final result = useCase(
+      event: event(
+        endType: EndType.ron,
+        winners: [win(PlayerRole.b)],
+        loser: PlayerRole.c,
+        honba: 2,
+      ),
+      dealer: PlayerRole.a,
+      riichiSticksOnTable: 0,
+    );
+    expect(result.handDeltas[PlayerRole.b], 1000);
+    expect(result.handDeltas[PlayerRole.c], -1000);
+    expect(result.sideDeltas[PlayerRole.b], 600);
+    expect(result.sideDeltas[PlayerRole.c], -600);
+    expectSplitInvariants(result, 0);
+  });
+
+  test('ryuukyoku and riichi land entirely in side deltas', () {
+    final result = useCase(
+      event: event(
+        endType: EndType.ryuukyoku,
+        tenpai: [PlayerRole.a, PlayerRole.b],
+        riichiDeclarers: [PlayerRole.a],
+      ),
+      dealer: PlayerRole.a,
+      riichiSticksOnTable: 0,
+    );
+    expect(result.handDeltas.values.every((v) => v == 0), true);
+    expect(result.sideDeltas[PlayerRole.a], 500); // -1000 riichi + 1500 tenpai
+    expect(result.sideDeltas[PlayerRole.b], 1500);
+    expect(result.sideDeltas[PlayerRole.c], -1500);
+    expect(result.sideDeltas[PlayerRole.d], -1500);
+    expect(result.riichiSticks, 1000);
+    expectSplitInvariants(result, 0);
   });
 }
