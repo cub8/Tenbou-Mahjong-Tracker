@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tenbou_mahjong/features/game_engine/domain/models/game.dart';
-import 'package:tenbou_mahjong/features/game_engine/domain/models/game_state.dart';
-import 'package:tenbou_mahjong/features/game_engine/domain/repositories/game_repository.dart';
-import 'package:tenbou_mahjong/features/game_engine/domain/usecases/reconstruct_game_state_use_case.dart';
 import 'package:tenbou_mahjong/features/game_session/domain/usecases/delete_game_use_case.dart';
 import 'package:tenbou_mahjong/features/game_session/domain/usecases/finish_game_use_case.dart';
 import 'package:tenbou_mahjong/features/game_session/presentation/pages/game_list_page.dart';
+import 'package:tenbou_mahjong/features/game_session/presentation/providers/game_state_provider.dart';
 import 'package:tenbou_mahjong/features/game_session/presentation/widgets/game_board_widget.dart';
 import 'package:tenbou_mahjong/router/app_router.dart';
-
-typedef _GameStateBundle = ({Game game, GameState state});
-
-final _gameStateProvider =
-    FutureProvider.family<_GameStateBundle, int>((ref, gameId) async {
-  final repository = ref.watch(gameRepositoryProvider);
-  final game = await repository.getGameById(gameId);
-  if (game == null) throw Exception('Game not found');
-  final events = await repository.getEventsForGame(gameId);
-  final state = ref.watch(reconstructGameStateUseCaseProvider)(game, events);
-  return (game: game, state: state);
-});
 
 enum _GameMenuAction { endGame, deleteGame }
 
@@ -31,7 +16,7 @@ class GameDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bundleAsync = ref.watch(_gameStateProvider(gameId));
+    final bundleAsync = ref.watch(gameStateProvider(gameId));
 
     return DefaultTabController(
       length: 2,
@@ -68,7 +53,8 @@ class GameDetailPage extends ConsumerWidget {
             children: [
               GameBoardWidget(
                 state: bundle.state,
-                isFinished: bundle.game.isFinished,
+                isFinished: bundle.game.isFinished || bundle.state.isFinished,
+                startingPoints: bundle.game.startingPoints,
               ),
               const Center(child: Text('Scoreboard — coming soon')),
             ],
@@ -77,12 +63,14 @@ class GameDetailPage extends ConsumerWidget {
           error: (error, stackTrace) => Center(child: Text('Error: $error')),
         ),
         floatingActionButton: bundleAsync.maybeWhen(
-          data: (bundle) => bundle.game.isFinished
+          data: (bundle) => (bundle.game.isFinished || bundle.state.isFinished)
               ? null
               : FloatingActionButton.small(
                   tooltip: 'End round',
-                  onPressed: () {
-                    // TODO: open end-round form (next session)
+                  onPressed: () async {
+                    await EndRoundRoute(id: '$gameId').push(context);
+                    ref.invalidate(gameStateProvider(gameId));
+                    ref.invalidate(gamesProvider);
                   },
                   child: const Icon(Icons.check),
                 ),
@@ -112,7 +100,7 @@ class GameDetailPage extends ConsumerWidget {
     if (confirmed != true) return;
 
     await ref.read(finishGameUseCaseProvider)(gameId);
-    ref.invalidate(_gameStateProvider(gameId));
+    ref.invalidate(gameStateProvider(gameId));
     ref.invalidate(gamesProvider);
   }
 

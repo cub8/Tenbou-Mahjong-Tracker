@@ -20,6 +20,12 @@ RouteBase get $appShellRouteData => StatefulShellRouteData.$route(
             GoRouteData.$route(
               path: ':id',
               factory: $GameDetailRoute._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: 'end-round',
+                  factory: $EndRoundRoute._fromState,
+                ),
+              ],
             ),
           ],
         ),
@@ -76,6 +82,31 @@ mixin $GameDetailRoute on GoRouteData {
   @override
   String get location =>
       GoRouteData.$location('/games/${Uri.encodeComponent(_self.id)}');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $EndRoundRoute on GoRouteData {
+  static EndRoundRoute _fromState(GoRouterState state) =>
+      EndRoundRoute(id: state.pathParameters['id']!);
+
+  EndRoundRoute get _self => this as EndRoundRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/games/${Uri.encodeComponent(_self.id)}/end-round',
+  );
 
   @override
   void go(BuildContext context) => context.go(location);

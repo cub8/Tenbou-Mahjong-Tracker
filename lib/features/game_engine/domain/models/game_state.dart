@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tenbou_mahjong/features/game_engine/domain/models/player_role.dart';
 import 'package:tenbou_mahjong/features/game_engine/domain/models/player_state.dart';
 import 'package:tenbou_mahjong/features/game_engine/domain/models/wind.dart';
 part "game_state.freezed.dart";
@@ -17,4 +18,12 @@ abstract class GameState with _$GameState {
   const GameState._();
 
   PlayerState get dealer => players.firstWhere((p) => p.isDealer);
+
+  /// The current seat wind for [role]. The dealer is always East; the remaining
+  /// seats follow turn order (a -> b -> c -> d) as south/west/north.
+  Wind seatWindFor(PlayerRole role) {
+    final n = PlayerRole.values.length;
+    final offset = (role.index - dealer.role.index + n) % n;
+    return Wind.values[offset];
+  }
 }
